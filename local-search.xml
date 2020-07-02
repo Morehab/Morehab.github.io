@@ -46,9 +46,15 @@
     <link href="/2020/06/30/%E6%B8%B8%E6%88%8F%E6%B5%8B%E8%AF%84%EF%BC%9AOPUS-%E7%81%B5%E9%AD%82%E4%B9%8B%E6%A1%A5/"/>
     <url>/2020/06/30/%E6%B8%B8%E6%88%8F%E6%B5%8B%E8%AF%84%EF%BC%9AOPUS-%E7%81%B5%E9%AD%82%E4%B9%8B%E6%A1%A5/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<p>想了很久，写什么都怪怪的。</p><p>就这样简短地作结吧：</p><ul><li><p>画面很好，是我很喜欢的风格，中间涉及人物对话的动画有点草率；</p></li><li><p>游戏设计也很用心，整个世界历史非常完整；</p></li><li><p>玩法也比较适合我这种无水平选手；</p></li><li><p>音乐没有特别出彩，但很契合剧情；</p></li></ul><p>故事非常、非常、非常棒。最后1h的呈现，让我由衷地想：<strong>如果能做出这样的游戏，就算是997我也愿意</strong>。</p>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>Games</tag>
+      
+    </tags>
     
   </entry>
   
@@ -68,19 +74,6 @@
       <tag>Diary</tag>
       
     </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2020/06/28/hello-world/"/>
-    <url>/2020/06/28/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="hljs bash">$ hexo new <span class="hljs-string">"My New Post"</span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="hljs bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="hljs bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="hljs bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
-    
-    
     
   </entry>
   
