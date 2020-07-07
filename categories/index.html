@@ -175,7 +175,7 @@
     <div class="category row">
       <a
         class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckcbc93io0003z4ur2z5o80lz" role="tab" data-toggle="collapse" href="#collapse-ckcbc93io0003z4ur2z5o80lz"
+        id="heading-ckcbcqbnb00025kur4ast02hd" role="tab" data-toggle="collapse" href="#collapse-ckcbcqbnb00025kur4ast02hd"
         aria-expanded="false"
       >
         Diary
@@ -188,8 +188,8 @@
       <div class="category-collapse">
         
           
-  <div id="collapse-ckcbc93io0003z4ur2z5o80lz" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckcbc93io0003z4ur2z5o80lz">
+  <div id="collapse-ckcbcqbnb00025kur4ast02hd" class="collapse in" role="tabpanel"
+       aria-labelledby="heading-ckcbcqbnb00025kur4ast02hd">
     
     
     
@@ -232,7 +232,7 @@
     <div class="category row">
       <a
         class="category-item  list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckcbc93j7000lz4ura5257boh" role="tab" data-toggle="collapse" href="#collapse-ckcbc93j7000lz4ura5257boh"
+        id="heading-ckcbcqbnm000g5kur56qz1n2e" role="tab" data-toggle="collapse" href="#collapse-ckcbcqbnm000g5kur56qz1n2e"
         aria-expanded="true"
       >
         Comment
@@ -245,8 +245,8 @@
       <div class="category-collapse">
         
           
-  <div id="collapse-ckcbc93j7000lz4ura5257boh" class="collapse in show" role="tabpanel"
-       aria-labelledby="heading-ckcbc93j7000lz4ura5257boh">
+  <div id="collapse-ckcbcqbnm000g5kur56qz1n2e" class="collapse in show" role="tabpanel"
+       aria-labelledby="heading-ckcbcqbnm000g5kur56qz1n2e">
     
   
   
@@ -255,7 +255,7 @@
     <div class="category-sub row">
       <a
         class="category-subitem collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckcbc93j9000pz4ur9pmx072z" role="tab" data-toggle="collapse" href="#collapse-ckcbc93j9000pz4ur9pmx072z"
+        id="heading-ckcbcqbnn000m5kur7qgt047v" role="tab" data-toggle="collapse" href="#collapse-ckcbcqbnn000m5kur7qgt047v"
         aria-expanded="false"
       >
         News
@@ -268,8 +268,8 @@
       <div class="category-collapse">
         
           
-  <div id="collapse-ckcbc93j9000pz4ur9pmx072z" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckcbc93j9000pz4ur9pmx072z">
+  <div id="collapse-ckcbcqbnn000m5kur7qgt047v" class="collapse in" role="tabpanel"
+       aria-labelledby="heading-ckcbcqbnn000m5kur7qgt047v">
     
     
     
@@ -291,7 +291,7 @@
     <div class="category-sub row">
       <a
         class="category-subitem collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckcbc93ja000tz4urfb1hequ3" role="tab" data-toggle="collapse" href="#collapse-ckcbc93ja000tz4urfb1hequ3"
+        id="heading-ckcbcqbo0000u5kurhsdb0ags" role="tab" data-toggle="collapse" href="#collapse-ckcbcqbo0000u5kurhsdb0ags"
         aria-expanded="false"
       >
         Games
@@ -304,8 +304,8 @@
       <div class="category-collapse">
         
           
-  <div id="collapse-ckcbc93ja000tz4urfb1hequ3" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckcbc93ja000tz4urfb1hequ3">
+  <div id="collapse-ckcbcqbo0000u5kurhsdb0ags" class="collapse in" role="tabpanel"
+       aria-labelledby="heading-ckcbcqbo0000u5kurhsdb0ags">
     
     
     
@@ -367,6 +367,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 

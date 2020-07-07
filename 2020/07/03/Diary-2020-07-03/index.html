@@ -212,7 +212,20 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <p>假期已经过去 <strong>半 个 月</strong>，成绩出了，音梦计划的结果也终于下来了。</p><p>我这半个月完全就是废人生活……懒得听新歌，懒得看新书，懒得做音乐，懒得思考。躺在床上看完全没有意义的各种无聊媒体商品，时间过得比做白日梦还快。然后就一点一点放松神经，脑细胞演化为空心肥皂泡，掉进可耻的资本主义消费陷阱里。</p><p>我完全赞同假期拿来摸各种鱼，但还是想摸漂亮一点别致一点的鱼。因为塑料金鱼摸起来就像马桶冲水把手，哗啦啦地用无聊取代恶臭，让人摸到五感退化四支僵劲不能动，没劲儿。要摸鱼，就要摸食人鱼、翻车鱼、蓝色金鱼和戴着海盗眼罩的小丑鱼。摸遍所有鳞片倒立、色彩诡异的鱼，才知道什么是真正的好鱼。</p><p>况且还有大作业和OOP考试和小学期三座大山等待着我。放眼未来，三分感伤，七分凄凉。</p><blockquote><p>胡适之啊胡适之！你怎么能如此堕落！先前订下的学习计划你都忘了吗？子曰：“吾日三省吾身。”不能再这样下去了！</p></blockquote><p>唉。总之，从今天起：</p><p>听新歌、看新书、编曲，与世界热切地交流吧！</p><p>向洋流、海鲜市场进发，去寻找好摸的鱼儿吧！</p><p>写作业、学OOP，也在所谓正途上认真地行进。</p><p>在夏天就应当做夏天的事，不是吗？</p><p><strong>绷紧神经，做有水平的咸鱼</strong>。</p>
+              <p>假期已经过去 <strong>半 个 月</strong>，成绩出了，音梦计划的结果也终于下来了。</p>
+<p>我这半个月完全就是废人生活……懒得听新歌，懒得看新书，懒得做音乐，懒得思考。躺在床上看完全没有意义的各种无聊媒体商品，时间过得比做白日梦还快。然后就一点一点放松神经，脑细胞演化为空心肥皂泡，掉进可耻的资本主义消费陷阱里。</p>
+<p>我完全赞同假期拿来摸各种鱼，但还是想摸漂亮一点别致一点的鱼。因为塑料金鱼摸起来就像马桶冲水把手，哗啦啦地用无聊取代恶臭，让人摸到五感退化四支僵劲不能动，没劲儿。要摸鱼，就要摸食人鱼、翻车鱼、蓝色金鱼和戴着海盗眼罩的小丑鱼。摸遍所有鳞片倒立、色彩诡异的鱼，才知道什么是真正的好鱼。</p>
+<p>况且还有大作业和OOP考试和小学期三座大山等待着我。放眼未来，三分感伤，七分凄凉。</p>
+<blockquote>
+<p>胡适之啊胡适之！你怎么能如此堕落！先前订下的学习计划你都忘了吗？子曰：“吾日三省吾身。”不能再这样下去了！</p>
+</blockquote>
+<p>唉。总之，从今天起：</p>
+<p>听新歌、看新书、编曲，与世界热切地交流吧！</p>
+<p>向洋流、海鲜市场进发，去寻找好摸的鱼儿吧！</p>
+<p>写作业、学OOP，也在所谓正途上认真地行进。</p>
+<p>在夏天就应当做夏天的事，不是吗？</p>
+<p><strong>绷紧神经，做有水平的咸鱼</strong>。</p>
+
             </article>
             <hr>
             <div>
@@ -315,6 +328,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 

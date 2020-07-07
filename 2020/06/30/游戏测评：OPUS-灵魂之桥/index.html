@@ -212,7 +212,20 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <p>想了很久，写什么都怪怪的。</p><p>就这样简短地作结吧：</p><ul><li><p>画面很好，是我很喜欢的风格，中间涉及人物对话的动画有点草率；</p></li><li><p>游戏设计也很用心，整个世界历史非常完整；</p></li><li><p>玩法也比较适合我这种无水平选手；</p></li><li><p>音乐没有特别出彩，但很契合剧情；</p></li></ul><p>故事非常、非常、非常棒。最后1h的呈现，让我由衷地想：<strong>如果能做出这样的游戏，就算是997我也愿意</strong>。</p>
+              <p>想了很久，写什么都怪怪的。</p>
+<p>就这样简短地作结吧：</p>
+<ul>
+<li><p>画面很好，是我很喜欢的风格，中间涉及人物对话的动画有点草率；</p>
+</li>
+<li><p>游戏设计也很用心，整个世界历史非常完整；</p>
+</li>
+<li><p>玩法也比较适合我这种无水平选手；</p>
+</li>
+<li><p>音乐没有特别出彩，但很契合剧情；</p>
+</li>
+</ul>
+<p>故事非常、非常、非常棒。最后1h的呈现，让我由衷地想：<strong>如果能做出这样的游戏，就算是997我也愿意</strong>。</p>
+
             </article>
             <hr>
             <div>
@@ -319,6 +332,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 

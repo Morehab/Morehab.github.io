@@ -212,7 +212,11 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <p>今天更新了头图、社交号、categories、icon等等一系列设置。</p><p>依然没有开始写大作业，sigh。明天一定。</p><p>看到了一个腾讯与一堆音乐学院与清华合作的音乐比赛，决定参加，得把正式录音提上日程了。</p><p>玩会儿OPUS，看会儿书，睡了。</p>
+              <p>今天更新了头图、社交号、categories、icon等等一系列设置。</p>
+<p>依然没有开始写大作业，sigh。明天一定。</p>
+<p>看到了一个腾讯与一堆音乐学院与清华合作的音乐比赛，决定参加，得把正式录音提上日程了。</p>
+<p>玩会儿OPUS，看会儿书，睡了。</p>
+
             </article>
             <hr>
             <div>
@@ -309,6 +313,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 

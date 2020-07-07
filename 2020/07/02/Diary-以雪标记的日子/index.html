@@ -212,7 +212,19 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <blockquote><p>这篇日记写于去年冬天，大抵是北京初雪或第二场雪后。</p></blockquote><p>北京的雪果然是不一样的。</p><p>在这样一场声势浩大的雪面前，所有的譬喻都会失去颜色。</p><p>我在雪的第二天出发，听见自行车轮压扁雪的声响，看见树枝上泛起的白浪，看见所有的一切被这个冬天温柔地抚摸、又诗意地埋葬。风吹过的时候一些雪又从树枝上掉落下来，然后昨天的印记就一点点融化进大地里。在这时，下雪不再是存在而是某种遗忘。</p><p>我不亦乐乎地占有着新雪，我把足迹遍布那些还没有被踩实的雪窝。</p><p>窗外的树很大。透过窗子看一点点掉落下来的雪，像是在看一个重复播放的屏保动画。唯一担心的，是树上的雪不能像电脑里面那样永生永存；一点一点，一点一点，这场雪就温柔地离开了。</p><p>下雪的确是不平凡的事件。我们好像都是靠这些细碎的罕见之事在标记着每一个相似的日子；有时候我们还给它赋予仪式，在一段时间内品尝由这些庆典带来的期望和回味。</p><blockquote><p>此处应该有我去年冬天拍摄的雪景，但好像要搞图床啥的乱七八糟，之后再说。</p></blockquote>
+              <blockquote>
+<p>这篇日记写于去年冬天，大抵是北京初雪或第二场雪后。</p>
+</blockquote>
+<p>北京的雪果然是不一样的。</p>
+<p>在这样一场声势浩大的雪面前，所有的譬喻都会失去颜色。</p>
+<p>我在雪的第二天出发，听见自行车轮压扁雪的声响，看见树枝上泛起的白浪，看见所有的一切被这个冬天温柔地抚摸、又诗意地埋葬。风吹过的时候一些雪又从树枝上掉落下来，然后昨天的印记就一点点融化进大地里。在这时，下雪不再是存在而是某种遗忘。</p>
+<p>我不亦乐乎地占有着新雪，我把足迹遍布那些还没有被踩实的雪窝。</p>
+<p>窗外的树很大。透过窗子看一点点掉落下来的雪，像是在看一个重复播放的屏保动画。唯一担心的，是树上的雪不能像电脑里面那样永生永存；一点一点，一点一点，这场雪就温柔地离开了。</p>
+<p>下雪的确是不平凡的事件。我们好像都是靠这些细碎的罕见之事在标记着每一个相似的日子；有时候我们还给它赋予仪式，在一段时间内品尝由这些庆典带来的期望和回味。</p>
+<blockquote>
+<p>此处应该有我去年冬天拍摄的雪景，但好像要搞图床啥的乱七八糟，之后再说。</p>
+</blockquote>
+
             </article>
             <hr>
             <div>
@@ -315,6 +327,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 

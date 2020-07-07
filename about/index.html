@@ -216,7 +216,9 @@
   </div>
 </div>
 <div class="mt-5 markdown-body">
-  <p>搭建于2020.6.28-6.30，很多个凉飕飕有蚊子的夜晚。<br>博客预计拿来写xx学习笔记，xx后感，日记周记月记年记（<del>总而言之，各种形式的nonsense</del>）。</p><p>会不断完善各种功能，现在就先这样罢。</p>
+  <p>搭建于2020.6.28-6.30，很多个凉飕飕有蚊子的夜晚。<br>博客预计拿来写xx学习笔记，xx后感，日记周记月记年记（<del>总而言之，各种形式的nonsense</del>）。</p>
+<p>会不断完善各种功能，现在就先这样罢。</p>
+
 </div>
 
               </div>
@@ -256,6 +258,29 @@
   </div>
 </div>
   
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
 
   
 
