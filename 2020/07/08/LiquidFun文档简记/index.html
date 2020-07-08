@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Diary: 2020/07/04 - Hexo</title>
+  <title>LiquidFun文档简记 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-04 23:05">
-      July 4, 2020 pm
+    <time datetime="2020-07-08 12:24">
+      July 8, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      83 字
+      835 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      11
        分钟
     </span>
   
@@ -212,30 +212,108 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <p>今天更新了头图、社交号、categories、icon等等一系列设置。</p>
-<p>依然没有开始写大作业，sigh。明天一定。</p>
-<p>看到了一个腾讯与一堆音乐学院与清华合作的音乐比赛，决定参加，得把正式录音提上日程了。</p>
-<p>玩会儿OPUS，看会儿书，睡了。</p>
+              <h1 id="LiquidFun文档简记"><a href="#LiquidFun文档简记" class="headerlink" title="LiquidFun文档简记"></a>LiquidFun文档简记</h1><blockquote>
+<p>为LiquidFun官方Programmer’s Guide的简记，便于以后查阅。</p>
+</blockquote>
+<h2 id="1-Shape"><a href="#1-Shape" class="headerlink" title="1. Shape"></a>1. Shape</h2><ul>
+<li>第一种：通过fixture与body绑定，随body进行rigid moves。</li>
+<li>第二种：通过顶点坐标的形式存在于world中，只能通过手动设置坐标进行移动。</li>
+</ul>
+<h3 id="1-1-Circle"><a href="#1-1-Circle" class="headerlink" title="1.1 Circle"></a>1.1 Circle</h3><pre><code class="hljs c++">b2CircleShape <span class="hljs-built_in">circle</span>;  <span class="hljs-comment">//实心</span>
+<span class="hljs-built_in">circle</span>.m_p.Set(<span class="hljs-number">2.0f</span>, <span class="hljs-number">3.0f</span>); <span class="hljs-comment">//圆心位置</span>
+<span class="hljs-built_in">circle</span>.m_radius = <span class="hljs-number">0.5f</span>; <span class="hljs-comment">//半径必须大于零</span></code></pre>
+
+<h3 id="1-2-Polygon"><a href="#1-2-Polygon" class="headerlink" title="1.2 Polygon"></a>1.2 Polygon</h3><p>Def: 实心凸（连接内部两点的线段不与边交叉）多边形，&gt;=3边。</p>
+<p>通过CCW（逆时针winding）填充：</p>
+<blockquote>
+<p>多边形填充有两种模式：alternate和winding。</p>
+<p><strong>alternate</strong>: </p>
+<p>显示器的每个扫描行都是从左到右扫描，系统只填充每个扫描行遇到的多边形的奇数边和偶数边之间的部分，不填充偶数边到奇数边之间的部分。</p>
+<p><strong>winding</strong>: </p>
+<p>用一笔画一个多边形，分clockwise或counterclockwise。</p>
+<p>画一条直线M，对于与它相交的线段：从直线M的左边到右边为clockwise，count+1；从直线M的右边到左边为counterclockwise，count-1。<br>判断一个区域E是否要被填充：从该区域画一线段M到整个多边型区域外，按照上面的方法对<strong>与该线相交的多边形的边</strong>进行count的计数，如果count非零则区域E要被填充，否则不填充。  </p>
+</blockquote>
+<p>从shape继承了radius，用于在多边形周围创造skin，防止tunneling。</p>
+<p>这会导致形状之间有小gap，可以将visual表示做得大一点。</p>
+<p><strong>成员都是public的</strong>， 初始化可传入一个vertex数组：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">///至多b2_maxPolygonVertices个顶点</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">b2PolygonShape</span> :</span> <span class="hljs-keyword">public</span> b2Shape
+&#123;
+<span class="hljs-keyword">public</span>:
+	b2PolygonShape();
+    
+	<span class="hljs-comment">/// Implement b2Shape.</span>
+	<span class="hljs-function">b2Shape* <span class="hljs-title">Clone</span><span class="hljs-params">(b2BlockAllocator* allocator)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// @see b2Shape::GetChildCount</span>
+	<span class="hljs-function">int32 <span class="hljs-title">GetChildCount</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// 用顶点数组创造多边形。</span>
+	<span class="hljs-comment">/// 边数count属于[3, b2_maxPolygonVertices].</span>
+	<span class="hljs-comment">/// 即时传入的点能构成多边形，点也可能被重排。</span>
+	<span class="hljs-comment">/// 共线的点被处理但不被移除。</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Set</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2* points, int32 count)</span></span>;
+
+	<span class="hljs-comment">/// 以原点为中心，平行于坐标轴。</span>
+	<span class="hljs-comment">/// hx the half-width，hy the half-height.</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetAsBox</span><span class="hljs-params">(float32 hx, float32 hy)</span></span>;
+
+	<span class="hljs-comment">/// hx the half-width，hy the half-height.</span>
+	<span class="hljs-comment">/// center：中心坐标</span>
+	<span class="hljs-comment">/// angle：旋转角度</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetAsBox</span><span class="hljs-params">(float32 hx, float32 hy, <span class="hljs-keyword">const</span> b2Vec2&amp; center, float32 angle)</span></span>;
+
+	<span class="hljs-comment">/// @see b2Shape::TestPoint</span>
+	<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">TestPoint</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Transform&amp; transform, <span class="hljs-keyword">const</span> b2Vec2&amp; p)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">// @see b2Shape::ComputeDistance</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ComputeDistance</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Transform&amp; xf, <span class="hljs-keyword">const</span> b2Vec2&amp; p, float32* distance, b2Vec2* normal, int32 childIndex)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// Implement b2Shape.</span>
+	<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">RayCast</span><span class="hljs-params">(b2RayCastOutput* output, <span class="hljs-keyword">const</span> b2RayCastInput&amp; input,</span></span>
+<span class="hljs-function"><span class="hljs-params">					<span class="hljs-keyword">const</span> b2Transform&amp; transform, int32 childIndex)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// @see b2Shape::ComputeAABB</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ComputeAABB</span><span class="hljs-params">(b2AABB* aabb, <span class="hljs-keyword">const</span> b2Transform&amp; transform, int32 childIndex)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// @see b2Shape::ComputeMass</span>
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ComputeMass</span><span class="hljs-params">(b2MassData* massData, float32 density)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// Get the vertex count.</span>
+	<span class="hljs-function">int32 <span class="hljs-title">GetVertexCount</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_count; &#125;
+
+	<span class="hljs-comment">/// Get a vertex by index.</span>
+	<span class="hljs-function"><span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-title">GetVertex</span><span class="hljs-params">(int32 index)</span> <span class="hljs-keyword">const</span></span>;
+
+	<span class="hljs-comment">/// 验证凸性，耗时很长。</span>
+	<span class="hljs-comment">/// @returns true if valid</span>
+	<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Validate</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+	b2Vec2 m_centroid; <span class="hljs-comment">//初始为0</span>
+	b2Vec2 m_vertices[b2_maxPolygonVertices]; 
+	b2Vec2 m_normals[b2_maxPolygonVertices];
+	int32 m_count; <span class="hljs-comment">//b2_polygonRadius</span>
+    <span class="hljs-comment">//m_type = e_polygon;</span>
+	<span class="hljs-comment">//m_radius = b2_polygonRadius;</span>
+&#125;;</code></pre>
+
+<h3 id="1-3-Edge"><a href="#1-3-Edge" class="headerlink" title="1.3 Edge"></a>1.3 Edge</h3><p>线段，用于做静态的环境。能与circle,polygon碰撞，但不能与线段碰撞。</p>
+<p>（这是由于碰撞系统要求两个物体至少一个有体积，线段无体积。）</p>
+<pre><code class="hljs armasm"><span class="hljs-keyword">b2Vec2 </span><span class="hljs-built_in">v1</span>(<span class="hljs-number">0</span>.<span class="hljs-number">0</span>f, <span class="hljs-number">0</span>.<span class="hljs-number">0</span>f), <span class="hljs-built_in">v2</span>(<span class="hljs-number">1</span>.<span class="hljs-number">0</span>f, <span class="hljs-number">0</span>.<span class="hljs-number">0</span>f)<span class="hljs-comment">;</span>
+<span class="hljs-keyword">b2EdgeShape </span>edge<span class="hljs-comment">;</span>
+<span class="hljs-symbol">edge.Set</span>(<span class="hljs-built_in">v1</span>, <span class="hljs-built_in">v2</span>)<span class="hljs-comment">;  //初始化</span></code></pre>
+
+<p>通常游戏世界会涉及多条线段连接而成的线。当物体在其上滑动时，可能会与线段顶点发声ghost collision，造成internal collision normal。</p>
+<p>于是有如下机制：使用命令<code>edge.m_hasVertex0 = true；</code>存入临近的ghost vertice，但这有点麻烦。</p>
+<p>![image-20200708114649294](C:\Users\ybr19\Documents\100%_MOREHAB\Files\BLOGGER\source\img\blog\ghost collision.png)</p>
+<p>于是又有如下机制：将边缝合为chain shapes。</p>
 
             </article>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/Diary/">Diary</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/Diary/">Diary</a>
-                    
-                  </div>
                 
               </div>
               
@@ -246,9 +324,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/08/LiquidFun%E6%96%87%E6%A1%A3%E7%AE%80%E8%AE%B0/">
+                      <a href="/2020/07/08/Diary-2020-07-08/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">LiquidFun文档简记</span>
+                        <span class="hidden-mobile">Diary: 2020/07/08</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -256,8 +334,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/07/03/Diary-2020-07-03/">
-                        <span class="hidden-mobile">Diary: 2020/07/03</span>
+                      <a href="/2020/07/04/Diary-2020-7-4/">
+                        <span class="hidden-mobile">Diary: 2020/07/04</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -530,7 +608,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/2020/07/04/Diary-2020-7-4/');
+          var target = decodeURI('/2020/07/08/LiquidFun%E6%96%87%E6%A1%A3%E7%AE%80%E8%AE%B0/');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -624,7 +702,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Diary: 2020/07/04&nbsp;",
+        "LiquidFun文档简记&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
