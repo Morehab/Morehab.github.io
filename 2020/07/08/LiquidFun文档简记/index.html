@@ -152,7 +152,7 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-08 12:24">
+    <time datetime="2020-07-08 23:05">
       July 8, 2020 pm
     </time>
   </div>
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      835 字
+      1.4k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      18
        分钟
     </span>
   
@@ -212,13 +212,22 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="LiquidFun文档简记"><a href="#LiquidFun文档简记" class="headerlink" title="LiquidFun文档简记"></a>LiquidFun文档简记</h1><blockquote>
-<p>为LiquidFun官方Programmer’s Guide的简记，便于以后查阅。</p>
-</blockquote>
-<h2 id="1-Shape"><a href="#1-Shape" class="headerlink" title="1. Shape"></a>1. Shape</h2><ul>
+              <h2 id="0-Pre-Everything"><a href="#0-Pre-Everything" class="headerlink" title="0. Pre-Everything"></a>0. Pre-Everything</h2><h2 id="1-Shape"><a href="#1-Shape" class="headerlink" title="1. Shape"></a>1. Shape</h2><p>用于碰撞检测，在b2Fixture创建时会由b2World自动创建。</p>
+<ul>
 <li>第一种：通过fixture与body绑定，随body进行rigid moves。</li>
 <li>第二种：通过顶点坐标的形式存在于world中，只能通过手动设置坐标进行移动。</li>
 </ul>
+<p>（1）分类：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">enum</span> Type &#123; 
+  e_circle = <span class="hljs-number">0</span>, e_edge = <span class="hljs-number">1</span>, 
+  e_polygon = <span class="hljs-number">2</span>, e_chain = <span class="hljs-number">3</span>, 
+  e_typeCount = <span class="hljs-number">4</span> 
+&#125;</code></pre>
+
+<p>（2）子类：b2ChainShape, b2CircleShape, …Edge…, …Polygon…。</p>
+<p>（3）数据成员：m_type, m_radius。</p>
+<p>（4）public成员函数：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cmember_f.png" srcset="/img/loading.gif" alt="image-20200709114719125"></p>
 <h3 id="1-1-Circle"><a href="#1-1-Circle" class="headerlink" title="1.1 Circle"></a>1.1 Circle</h3><pre><code class="hljs c++">b2CircleShape <span class="hljs-built_in">circle</span>;  <span class="hljs-comment">//实心</span>
 <span class="hljs-built_in">circle</span>.m_p.Set(<span class="hljs-number">2.0f</span>, <span class="hljs-number">3.0f</span>); <span class="hljs-comment">//圆心位置</span>
 <span class="hljs-built_in">circle</span>.m_radius = <span class="hljs-number">0.5f</span>; <span class="hljs-comment">//半径必须大于零</span></code></pre>
@@ -305,15 +314,97 @@
 <span class="hljs-symbol">edge.Set</span>(<span class="hljs-built_in">v1</span>, <span class="hljs-built_in">v2</span>)<span class="hljs-comment">;  //初始化</span></code></pre>
 
 <p>通常游戏世界会涉及多条线段连接而成的线。当物体在其上滑动时，可能会与线段顶点发声ghost collision，造成internal collision normal。</p>
-<p>于是有如下机制：使用命令<code>edge.m_hasVertex0 = true；</code>存入临近的ghost vertice，但这有点麻烦。</p>
+<p>于是有如下机制：使用命令</p>
+<pre><code class="hljs C++">b2Vec2 v0<span class="hljs-number">-3</span>(x0<span class="hljs-number">-3</span>,y0<span class="hljs-number">-3</span>);
+b2EdgeShape edge;
+edge.Set(v1, v2);
+
+   edge.m_hasVertex0 = <span class="hljs-literal">true</span>;
+   edge.m_hasVertex3 = <span class="hljs-literal">true</span>;
+   edge.m_vertex0 = v0;
+   edge.m_vertex3 = v3;</code></pre>
+
+<p>存入临近的ghost vertice，但这有点麻烦。</p>
 <p>![image-20200708114649294](C:\Users\ybr19\Documents\100%_MOREHAB\Files\BLOGGER\source\img\blog\ghost collision.png)</p>
-<p>于是又有如下机制：将边缝合为chain shapes。</p>
+<p>于是又有如下机制：将边缝合为chain shapes。这可以防止ghost collision，并提供<strong>双边碰撞（two-sided collision, 我猜测指的是在两端的碰撞）。</strong></p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5C2-sided.png" srcset="/img/loading.gif" alt="Chain shape"></p>
+<pre><code class="hljs C++"><span class="hljs-comment">// This a chain shape with isolated vertices</span>
+  b2Vec2 vs[<span class="hljs-number">4</span>]; <span class="hljs-comment">//Set them</span>
+  b2ChainShape chain;
+  chain.CreateChain(vs, <span class="hljs-number">4</span>);</code></pre>
+
+
+<p>对于滚动的游戏世界，可以使用ghost vertices将chain连接在一起。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//Install ghost vertices</span>
+chain.SetPrevVertex(b2Vec2(<span class="hljs-number">3.0f</span>, <span class="hljs-number">1.0f</span>));
+chain.SetNextVertex(b2Vec2(<span class="hljs-number">-2.0f</span>, <span class="hljs-number">0.0f</span>));</code></pre>
+
+<p>还可以创造<strong>loop</strong>：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">// first and last vertices are connected</span>
+b2ChainShape chain;
+chain.CreateLoop(vs, <span class="hljs-number">4</span>);</code></pre>
+
+<p>代码<strong>不支持chain shape之间出现交叉</strong>，且vertices之间过近也可能导致问题，故最好保证边长于b2_linearSlop = 5mm。</p>
+<blockquote>
+<p>/// A small length used as a collision and constraint tolerance. Usually it is<br>/// chosen to be numerically significant, but visually insignificant.<br>#define b2_linearSlop            0.005f</p>
+</blockquote>
+<p>在chain中的边都被视作child shape，可以通过指标访问。当chain shape与body连接时，每个边在broad-phase碰撞树中都会得到自己的bounding box。</p>
+<pre><code class="hljs reasonml"><span class="hljs-comment">// Visit each child edge.</span>
+for (<span class="hljs-built_in">int32</span> i = <span class="hljs-number">0</span>; i &lt; chain.<span class="hljs-constructor">GetChildCount()</span>; ++i)
+&#123;
+   b2EdgeShape edge;
+   chain.<span class="hljs-constructor">GetChildEdge(&amp;<span class="hljs-params">edge</span>, <span class="hljs-params">i</span>)</span>;
+   …
+&#125;</code></pre>
+
+
+
+<h3 id="1-5-Transform"><a href="#1-5-Transform" class="headerlink" title="1.5 Transform"></a>1.5 Transform</h3><p>transform类用于表示刚体的位置，在Math.h中定义。</p>
+<p>数据成员：</p>
+<pre><code class="hljs 1c">b2Vec2 p; <span class="hljs-comment">//translation</span>
+b2Rot q; <span class="hljs-comment">//rotation</span>
+<span class="hljs-comment">//Rot类含两个数据成员：旋转角的s和c。</span></code></pre>
+
+
+
+<h3 id="1-4-几何查询"><a href="#1-4-几何查询" class="headerlink" title="1.4  几何查询"></a>1.4  几何查询</h3><h4 id="1-4-1-查询点与形状的重合"><a href="#1-4-1-查询点与形状的重合" class="headerlink" title="1.4.1  查询点与形状的重合"></a>1.4.1  查询点与形状的重合</h4><pre><code class="hljs reasonml"><span class="hljs-built_in">bool</span> hit = shape-&gt;<span class="hljs-constructor">TestPoint(<span class="hljs-params">transform</span>, <span class="hljs-params">point</span>)</span>;</code></pre>
+
+<p>edge和chain（包括loop）总会返回false。</p>
+<h4 id="1-4-2-进行ray-cast"><a href="#1-4-2-进行ray-cast" class="headerlink" title="1.4.2  进行ray cast"></a>1.4.2  进行ray cast</h4><blockquote>
+<p>ray cast（光线投射）：</p>
+<p>用于3D数据场的可视化，是体绘制中的一种处理方式：</p>
+<p>向三维数据场投射出光线，然后沿着光线方向积分，数值化方法为由前往后或由后向前合成。</p>
+<p>（不是很懂）</p>
+</blockquote>
+<p>在这里指用一束光线打到shape上，得到第一个交点和对应的向量。若光线从形状内部触发，则标记为未击中。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cray_cast.png" srcset="/img/loading.gif" alt="image-20200709140659310"></p>
+<h4 id="1-4-3-两个图形的重合"><a href="#1-4-3-两个图形的重合" class="headerlink" title="1.4.3 两个图形的重合"></a>1.4.3 两个图形的重合</h4><pre><code class="hljs reasonml"><span class="hljs-built_in">bool</span> b2<span class="hljs-constructor">TestOverlap(<span class="hljs-params">const</span> <span class="hljs-params">b2Shape</span> <span class="hljs-operator">*</span><span class="hljs-params">sA</span>, <span class="hljs-params">int32</span> <span class="hljs-params">indexA</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Shape</span> <span class="hljs-operator">*</span><span class="hljs-params">sB</span>, <span class="hljs-params">int32</span> <span class="hljs-params">indexB</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Transform</span> &amp;<span class="hljs-params">xfa</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Transform</span> &amp;<span class="hljs-params">xfb</span>)</span>;
+<span class="hljs-comment">//index指对于chain shapes的child index。</span></code></pre>
+
 
             </article>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Coding/">Coding</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Coding/LiquidFun/">LiquidFun</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Coding/">Coding</a>
+                    
+                      <a class="hover-with-bg" href="/tags/LiquidFun/">LiquidFun</a>
+                    
+                  </div>
                 
               </div>
               
@@ -324,9 +415,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/08/Diary-2020-07-08/">
+                      <a href="/2020/07/09/Comment-Notes-on-the-ALBUMs/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Diary: 2020/07/08</span>
+                        <span class="hidden-mobile">Comment: Notes on the ALBUMs</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -334,8 +425,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/07/04/Diary-2020-7-4/">
-                        <span class="hidden-mobile">Diary: 2020/07/04</span>
+                      <a href="/2020/07/08/Diary-2020-07-08/">
+                        <span class="hidden-mobile">Diary: 2020/07/08</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
