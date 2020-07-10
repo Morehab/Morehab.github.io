@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      3.3k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      43
        分钟
     </span>
   
@@ -212,7 +212,8 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h2 id="0-Pre-Everything"><a href="#0-Pre-Everything" class="headerlink" title="0. Pre-Everything"></a>0. Pre-Everything</h2><h2 id="1-Shape"><a href="#1-Shape" class="headerlink" title="1. Shape"></a>1. Shape</h2><p>用于碰撞检测，在b2Fixture创建时会由b2World自动创建。</p>
+              <h2 id="0-Pre-Everything"><a href="#0-Pre-Everything" class="headerlink" title="0. Pre-Everything"></a>0. Pre-Everything</h2><h3 id="0-0-Reference"><a href="#0-0-Reference" class="headerlink" title="0.0 Reference"></a>0.0 Reference</h3><p><a href="http://www.ladeng6666.com/blog/?cat=8" target="_blank" rel="noopener">Blog：拉小登，上面有Box2D部分概念和应用</a></p>
+<h2 id="1-Collision模块。"><a href="#1-Collision模块。" class="headerlink" title="1. Collision模块。"></a>1. Collision模块。</h2><h3 id="1-0-Shape"><a href="#1-0-Shape" class="headerlink" title="1.0 Shape"></a>1.0 Shape</h3><p>用于碰撞检测，在b2Fixture创建时会由b2World自动创建。</p>
 <ul>
 <li>第一种：通过fixture与body绑定，随body进行rigid moves。</li>
 <li>第二种：通过顶点坐标的形式存在于world中，只能通过手动设置坐标进行移动。</li>
@@ -381,6 +382,217 @@ b2Rot q; <span class="hljs-comment">//rotation</span>
 <h4 id="1-4-3-两个图形的重合"><a href="#1-4-3-两个图形的重合" class="headerlink" title="1.4.3 两个图形的重合"></a>1.4.3 两个图形的重合</h4><pre><code class="hljs reasonml"><span class="hljs-built_in">bool</span> b2<span class="hljs-constructor">TestOverlap(<span class="hljs-params">const</span> <span class="hljs-params">b2Shape</span> <span class="hljs-operator">*</span><span class="hljs-params">sA</span>, <span class="hljs-params">int32</span> <span class="hljs-params">indexA</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Shape</span> <span class="hljs-operator">*</span><span class="hljs-params">sB</span>, <span class="hljs-params">int32</span> <span class="hljs-params">indexB</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Transform</span> &amp;<span class="hljs-params">xfa</span>, <span class="hljs-params">const</span> <span class="hljs-params">b2Transform</span> &amp;<span class="hljs-params">xfb</span>)</span>;
 <span class="hljs-comment">//index指对于chain shapes的child index。</span></code></pre>
 
+<h4 id="1-4-4-Contact-Manifold-接触流形"><a href="#1-4-4-Contact-Manifold-接触流形" class="headerlink" title="1.4.4 Contact Manifold(接触流形)"></a>1.4.4 Contact Manifold(接触流形)</h4><p>LiquidFun有用于计算重合shape的接触点的函数。</p>
+<blockquote>
+<p>normal vector: 法向量。</p>
+</blockquote>
+<p>圆对圆/圆对多边形：一个点+一个法向量。</p>
+<p>多边形对多边形：两个点+一个法向量，被统一在一个流形结构里。</p>
+<blockquote>
+<p>b2Manifold类包含1*法向量 + &lt;=2个接触点，均以local坐标系保存。每个点都存下了法向和切向（摩擦）的力。</p>
+<p>b2Manifold是用于内部使用的类。用户最好使用b2WorldManifold来生成normal和points在world中的坐标，需要提供b2Manifold, shape transform 和 radius。</p>
+<pre><code class="hljs c++">b2WorldManifold worldManifold;
+worldManifold.Initialize(&amp;manifold, transformA, shapeA.m_radius, transformB, shapeB.m_radius);
+<span class="hljs-keyword">for</span> (int32 i = <span class="hljs-number">0</span>; i &lt; manifold.pointCount; ++i)
+&#123;
+   b2Vec2 <span class="hljs-built_in">point</span> = worldManifold.points[i];
+   …
+&#125;</code></pre>
+</blockquote>
+<p>在模拟中manifold会发生变化，点可能增加或减少，可以通过b2GetPointStates检测。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cpointstate.png" srcset="/img/loading.gif" alt="image-20200709153724244"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cgetstate.png" srcset="/img/loading.gif" alt="image-20200709153811976"></p>
+<h4 id="1-4-5-距离"><a href="#1-4-5-距离" class="headerlink" title="1.4.5 距离"></a>1.4.5 距离</h4><p>b2Distance函数用于计算两个形状之间的距离，该函数需要将shape转化为shape proxy，还会进行一定的缓存以准备重复调用。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">/// Compute the closest points between two shapes. Supports any combination of:</span>
+<span class="hljs-comment">/// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.</span>
+<span class="hljs-comment">/// On the first call set b2SimplexCache.count to zero.</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">b2Distance</span><span class="hljs-params">(b2DistanceOutput* output,</span></span>
+<span class="hljs-function"><span class="hljs-params">				b2SimplexCache* cache, </span></span>
+<span class="hljs-function"><span class="hljs-params">				<span class="hljs-keyword">const</span> b2DistanceInput* input)</span></span>;</code></pre>
+
+<p>其中，input的具体信息如下：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">/// Input for b2Distance.</span>
+<span class="hljs-comment">/// You have to option to use the shape radii</span>
+<span class="hljs-comment">/// in the computation. </span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">b2DistanceInput</span></span>
+<span class="hljs-class">&#123;</span>
+	b2DistanceProxy proxyA;
+	b2DistanceProxy proxyB;
+	b2Transform transformA;
+	b2Transform transformB;
+	<span class="hljs-keyword">bool</span> useRadii;
+&#125;;</code></pre>
+
+<p>output的具体信息如下：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">/// Output for b2Distance.</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">b2DistanceOutput</span></span>
+<span class="hljs-class">&#123;</span>
+	b2Vec2 pointA;		<span class="hljs-comment">///&lt; closest point on shapeA</span>
+	b2Vec2 pointB;		<span class="hljs-comment">///&lt; closest point on shapeB</span>
+	float32 distance;
+	int32 iterations;	<span class="hljs-comment">///&lt; number of GJK iterations used</span>
+&#125;;</code></pre>
+
+<p>SimplexCache的信息如下（不是很明白具体要传啥）：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">/// Used to warm start b2Distance.</span>
+<span class="hljs-comment">/// Set count to zero on first call.</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">b2SimplexCache</span></span>
+<span class="hljs-class">&#123;</span>
+	float32 metric;		<span class="hljs-comment">///&lt; length or area</span>
+	uint16 count;
+	uint8 indexA[<span class="hljs-number">3</span>];	<span class="hljs-comment">///&lt; vertices on shape A</span>
+	uint8 indexB[<span class="hljs-number">3</span>];	<span class="hljs-comment">///&lt; vertices on shape B</span>
+&#125;;</code></pre>
+
+<h4 id="1-4-6-Time-of-Impact"><a href="#1-4-6-Time-of-Impact" class="headerlink" title="1.4.6 Time of Impact"></a>1.4.6 Time of Impact</h4><p>用于决定两个moving shapes的碰撞时间，防止tunneling。</p>
+<p>该函数会考虑旋转和平移，但如果旋转角度过大，则函数可能遗漏碰撞。但函数仍然会报告不重合的时间，且会考虑所有的平移碰撞。</p>
+<p><strong>后面还有一大段讨论这个函数的限制等，没太明白，暂且跳过。</strong></p>
+<h3 id="1-5-动态树"><a href="#1-5-动态树" class="headerlink" title="1.5 动态树"></a>1.5 动态树</h3><p>用于有效地管理大量shapes（但实际上它并不掌握shape的信息，而是在AABB上操作）。</p>
+<p>该树就是AABB的层级树，每个内部节点有两个子节点，叶子是单用户的AABB。该树会使用旋转保持平衡，即便输入是退化的。</p>
+<p>树的结构使得它能有效地执行ray cast和region query。一般我们不会直接使用该树。</p>
+<p>同样，使用动态树进行pair management，可以对碰撞进行broad-phase检测。broad-phase一般也不会直接使用。</p>
+<h2 id="2-Dynamics模块"><a href="#2-Dynamics模块" class="headerlink" title="2. Dynamics模块"></a>2. Dynamics模块</h2><p>包含fixture, rigid body, contact, joint, world, listener等多个类，之间依赖复杂。</p>
+<h3 id="2-1-Bodies"><a href="#2-1-Bodies" class="headerlink" title="2.1 Bodies"></a>2.1 Bodies</h3><ul>
+<li><p>Bodies有位置和速度；</p>
+</li>
+<li><p>可以在其上施加力-foce、力矩-torque、冲量-impulse；</p>
+</li>
+<li><p>可以是static, kinematic, dynamic。</p>
+</li>
+</ul>
+<blockquote>
+<p>Dynamic: 具有全套属性（有限质量、阻力），受重力和作用力的影响，可以和其他每个刚体碰撞，性能成本高、最具互动性。</p>
+<p>Kinematic: 仅在明确的用户控制下移动（手动移动/速度），只能与Dynamic碰撞，不受重力和作用力的影响，成本低。碰撞下同样不动（无限质量：mass = inverse mass = 0）。</p>
+<p>Static: 不动（具有无限质量）（除非用户手动移动），只能与Dynamic碰撞。</p>
+</blockquote>
+<ul>
+<li><strong>Bodies carry fixtures.</strong> 在LiquidFun中一定是刚体（一个Body上的两个fixture不会发生相对运动，不会碰撞）。</li>
+<li>body从fixture处获得质量属性（可以override）。</li>
+<li>一般会对创建的body保存其指针，以便于查询和析构。</li>
+</ul>
+<h4 id="2-1-1-定义"><a href="#2-1-1-定义" class="headerlink" title="2.1.1 定义"></a>2.1.1 定义</h4><p>通过 b2BodyDef（可循环使用） 定义一个body。</p>
+<p>body有两个点比较重要：</p>
+<ul>
+<li>原点：fixture和joint都是以原点为参照附着的。</li>
+<li>质心：很多内部计算都要使用质心。</li>
+</ul>
+<blockquote>
+<p>frame of reference: 信仰和准则，参照系。</p>
+</blockquote>
+<p>Shapes are added to a body after construction.</p>
+<pre><code class="hljs C++">    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">b2BodyDef</span></span>
+<span class="hljs-class">&#123;</span>
+
+	<span class="hljs-comment">///enum b2BodyType &#123;</span>
+	<span class="hljs-comment">///b2_staticBody = 0, b2_kinematicBody, b2_dynamicBody, b2_bulletBody,&#125;;</span>
+    <span class="hljs-comment">/// 最好在创造时就确定，因为之后改变type花费巨大</span>
+	<span class="hljs-comment">/// Note: if a dynamic body would have zero mass, the mass is set to one.</span>
+	b2BodyType type;
+
+	<span class="hljs-comment">/// The world position of body's 原点. </span>
+    <span class="hljs-comment">///不要把body放在world的原点然后再移动！这会导致时间成本提高</span>
+	b2Vec2 <span class="hljs-built_in">position</span>;
+
+	<span class="hljs-comment">/// The world angle of the body in radians.</span>
+	float32 angle;
+
+	<span class="hljs-comment">/// The 线速度 of the body's origin in world co-ordinates.</span>
+	b2Vec2 linearVelocity;
+
+	<span class="hljs-comment">/// The 角速度 of the body.</span>
+	float32 angularVelocity;</code></pre>
+
+<p><strong>Damping – 阻尼</strong></p>
+<ul>
+<li>Damping与friction不同，friction仅在有接触时出现</li>
+<li>damping系数应当&gt;0=no damping &amp;&amp; &lt;infinity=full damping</li>
+<li>通常damping系数 0-0.1</li>
+<li>linear damping会让body看着像飘起来<pre><code class="hljs C++"><span class="hljs-comment">///线性damping是用于降低线速度，阻尼系数可以&gt;1,但系数较大时效果对time step较为敏感</span>
+float32 linearDamping;
+
+<span class="hljs-comment">/// 角度damping是用于降低角速度，阻尼系数可以&gt;1,但系数较大时效果对time step较为敏感</span>
+float32 angularDamping;</code></pre>
+
+</li>
+</ul>
+<p><strong>Sleep</strong>: </p>
+<p>将body送入sleep状态意味着停止模拟它，降低成本。</p>
+<p>当：</p>
+<ul>
+<li>一个醒来的body和睡着的body碰撞时</li>
+<li>body上附着的joint/contact被消灭时</li>
+<li>人工唤醒时</li>
+</ul>
+<p>睡着的body会醒来。</p>
+<pre><code class="hljs angelscript"><span class="hljs-comment">/// 允许睡觉吗？</span>
+<span class="hljs-built_in">bool</span> allowSleep;
+
+<span class="hljs-comment">/// 最初睡着/醒着？</span>
+<span class="hljs-built_in">bool</span> awake;</code></pre>
+<p><strong>Fixed Rotation</strong>：</p>
+<p>对于人物角色，你可能希望通过设置使其不能旋转。</p>
+<p>若将fixedRotation设为true，则转动惯量和其逆都将被设为0。</p>
+<pre><code class="hljs angelscript"><span class="hljs-comment">/// 能转喵？</span>
+<span class="hljs-built_in">bool</span> fixedRotation;</code></pre>
+<p><strong>Bullets</strong></p>
+<p>游戏中常常需要生成一系列以一定帧率播放的图片，这也就是所谓的离散模拟。这种模拟中，刚体可能在一个time step里进行了大量移动，这可能会导致tunneling。</p>
+<p>LiquidFun使用CCD来防止tunneling，也即：</p>
+<ul>
+<li>将物体从旧位置移动至新位置，寻找过程中的碰撞；</li>
+<li>计算碰撞的TOI；</li>
+<li>将物体移动到第一次TOI，然后剩余时间悬停；</li>
+</ul>
+<p>一般来说在dynamic bodies之间不会使用CCD（降低成本），但你可能需要这样的操作（子弹穿过dynamic的砖）。</p>
+<p>在LiquidFun中，你可以将高速运动的物体设置为bullets，这样他们就会与static, dynamic的物体都运行CCD。</p>
+<p>注：static/kinematic bodies不会发生tunneling。</p>
+<pre><code class="hljs angelscript"><span class="hljs-comment">/// 高速且dynamic且要防止tunneling吗？</span>
+<span class="hljs-comment">/// 少更改（很耗时）。</span>
+<span class="hljs-built_in">bool</span> bullet;</code></pre>
+<p><strong>Activation</strong></p>
+<p>创造一个物体，但它不参与碰撞/运动。</p>
+<p>与sleeping类似，但不会被碰撞唤醒，它的fixture不会参与broad-phase检测。</p>
+<p>不参与碰撞、ray cast等。</p>
+<p>joint可以附着在未被激活的物体上，这些joint不会参与模拟。</p>
+<p>激活一个joint没有变形的物体要小心（？）。</p>
+<pre><code class="hljs angelscript"><span class="hljs-comment">/// 激活了吗？</span>
+<span class="hljs-built_in">bool</span> active;</code></pre>
+<p><strong>用户数据</strong></p>
+<p>一个空指针，用于链接用户自己的特殊设置。</p>
+<p>应当对所有用户数据使用<strong>同样的一类对象</strong>。</p>
+<pre><code class="hljs sql">/// <span class="hljs-keyword">Use</span> this <span class="hljs-keyword">to</span> <span class="hljs-keyword">store</span> application specific <span class="hljs-keyword">body</span> data.
+<span class="hljs-built_in">void</span>* userData;</code></pre>
+<p><strong>Gravity Scale</strong></p>
+<p>用于单独调整某个物体受到的重力。增加重力可能影响稳定性。</p>
+<pre><code class="hljs angelscript">    <span class="hljs-comment">/// Scale the gravity applied to this body.</span>
+    <span class="hljs-built_in">float</span>32 gravityScale;
+&#125;;</code></pre>
+
+
+
+<h4 id="2-1-2-Body-Factory"><a href="#2-1-2-Body-Factory" class="headerlink" title="2.1.2 Body Factory"></a>2.1.2 Body Factory</h4><p>我们使用world类提供的body factory生成和析构一个物体。</p>
+<pre><code class="hljs c++">b2Body* dynamicBody = myWorld-&gt;CreateBody(&amp;bodyDef);
+<span class="hljs-comment">/// DO SOMETHING</span>
+myWorld-&gt;DestroyBody(dynamicBody);
+dynamicBody = <span class="hljs-literal">NULL</span>;</code></pre>
+
+
+
+<h4 id="2-1-3-一些其他的注意事项"><a href="#2-1-3-一些其他的注意事项" class="headerlink" title="2.1.3 一些其他的注意事项"></a>2.1.3 一些其他的注意事项</h4><p>（1）手动移动static bodies：</p>
+<ul>
+<li><p>要注意不要压扁两个/多个static bodies之间的dynamic bodies。</p>
+</li>
+<li><p>Friction不能正常工作；</p>
+</li>
+<li><p>将多个shape绑定到一个静态物体上要比创造多个静态物体，每个绑定一个shape要快。</p>
+</li>
+<li><p>静态物体的质量和其逆都是0。</p>
+</li>
+</ul>
+<p>（2）删除Bodies:</p>
+<ul>
+<li>LiquidFun allows you to avoid destroying bodies by deleting your b2World object, which does all the cleanup work for you. However, you should be mindful to nullify body pointers that you keep in your game engine. (？)</li>
+<li>删除Body时其上附着的fixture和joint也会被自动删除。</li>
+</ul>
 
             </article>
             <hr>
@@ -425,8 +637,8 @@ b2Rot q; <span class="hljs-comment">//rotation</span>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/07/08/Diary-2020-07-08/">
-                        <span class="hidden-mobile">Diary: 2020/07/08</span>
+                      <a href="/2020/07/04/Diary-2020-7/">
+                        <span class="hidden-mobile">Diary: 2020/07/04</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
