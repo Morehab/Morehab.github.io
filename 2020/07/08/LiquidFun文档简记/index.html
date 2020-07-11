@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -55,7 +55,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Hexo</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>Morehab's Space</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -139,10 +139,10 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
+         style="background: url('/img/bg/post.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.15)">
           <div class="container text-center white-text fadeInUp">
             <span class="h2" id="subtitle">
               
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.6k 字
+      10.6k 字
     </span>
   
 
@@ -173,12 +173,20 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      82
+      131
        分钟
     </span>
   
 
   
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
   
 </div>
 
@@ -202,6 +210,12 @@
       <div class="container nopadding-md" id="board-ctn">
         <div class="py-5" id="board">
           <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：5 minutes ago
+                
+              </p>
             
             <article class="markdown-body">
               <h2 id="0-Pre-Everything"><a href="#0-Pre-Everything" class="headerlink" title="0. Pre-Everything"></a>0. Pre-Everything</h2><h3 id="0-0-Reference"><a href="#0-0-Reference" class="headerlink" title="0.0 Reference"></a>0.0 Reference</h3><p><a href="http://www.ladeng6666.com/blog/?cat=8" target="_blank" rel="noopener">Blog：拉小登，上面有Box2D部分概念和应用</a></p>
@@ -836,7 +850,293 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
 
 <p>注意到齿轮是依赖于之前那两个关节的，因此：</p>
 <p><strong>总是先删除齿轮，再删除其依赖的关节/物体。否则出事。</strong></p>
-<h5 id="2-3-3-6-Mouse-Joint-鼠标关节"><a href="#2-3-3-6-Mouse-Joint-鼠标关节" class="headerlink" title="2.3.3.6  Mouse Joint(鼠标关节)"></a>2.3.3.6  Mouse Joint(鼠标关节)</h5>
+<h5 id="2-3-3-6-Mouse-Joint-鼠标关节"><a href="#2-3-3-6-Mouse-Joint-鼠标关节" class="headerlink" title="2.3.3.6  Mouse Joint(鼠标关节)"></a>2.3.3.6  Mouse Joint(鼠标关节)</h5><p>鼠标关节在testbed中被用于鼠标操控物体，它试图驱动物体上一点向光标的当前位置移动，并未对旋转做出限制。</p>
+<p>mouse joint的定义中有一个目标点、力的上限、频率、阻尼ratio。</p>
+<p>目标点最初与物体的锚点重合。</p>
+<p>最大力是用于防止动态物体碰撞时产生触发过于激烈的反应，设置成多大都没关系。</p>
+<p>频率、阻尼ratio是用于创造弹簧/阻尼的效果的，与distance joint中的情况一样。</p>
+<p>用户常常希望将鼠标关节改造后用在游戏里，做到精准的位置放置和立刻的反应，但鼠标关节在这方面性能并不好。<strong>你可能需要考虑使用kinematic bodies</strong>。</p>
+<h5 id="2-3-3-7-Wheel-Joint-轮子关节"><a href="#2-3-3-7-Wheel-Joint-轮子关节" class="headerlink" title="2.3.3.7  Wheel Joint(轮子关节)"></a>2.3.3.7  Wheel Joint(轮子关节)</h5><p>轮子关节使得bodyB上的一点与bodyA上的一条线联系起来，并且提供了一个悬挂弹簧绳。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cwheel.png" srcset="/img/loading.gif" alt="image-20200711110933763"></p>
+<h5 id="2-3-3-8-Weld-Joint（焊接关节）"><a href="#2-3-3-8-Weld-Joint（焊接关节）" class="headerlink" title="2.3.3.8  Weld Joint（焊接关节）"></a>2.3.3.8  Weld Joint（焊接关节）</h5><p>weld joint限制了两个物体之间的所有相对运动。可以看testbed里面的Cantilever.h（悬臂）了解相关信息。</p>
+<p>你也许会想用weld joint来定义能打破的结构，但在LiquidFun的实现下关节比较柔软，所以通过weld joints连接的chain of bodies可能会屈伸（flex）。</p>
+<p>事实上，创造能打破的物体时，不如从一个物体开始，往上附着多个fixtures。在物体破坏时，你可以把fixture摧毁然后在另一个物体上重建这个fixture。具体可以看testbed里面的breakable example。</p>
+<h5 id="2-3-3-9-Rope-Joint（绳子关节）"><a href="#2-3-3-9-Rope-Joint（绳子关节）" class="headerlink" title="2.3.3.9  Rope Joint（绳子关节）"></a>2.3.3.9  Rope Joint（绳子关节）</h5><p>Rope Joint限制了两个点之间的最大距离，这可以有效地防止chain of bodies在过高的负载下延伸，详见b2RopeJoint.h + RopeJoint.h。</p>
+<h5 id="2-3-3-10-Friction-Joint（摩擦关节）"><a href="#2-3-3-10-Friction-Joint（摩擦关节）" class="headerlink" title="2.3.3.10  Friction Joint（摩擦关节）"></a>2.3.3.10  Friction Joint（摩擦关节）</h5><p>Friction Joint是用于自顶向下的摩擦的，提供了2维的平移摩擦和角摩擦，详见b2FrictionJoint.h + ApplyForce.h。</p>
+<h3 id="2-4-Contacts"><a href="#2-4-Contacts" class="headerlink" title="2.4  Contacts"></a>2.4  Contacts</h3><p>Contacts是用于管理两个fixtures之间的碰撞的。如果fixture有子对象（例如chain shape），则对每个相关的孩子都会存在一个contact。</p>
+<p>contact有多种种类，都是b2Contact类的衍生类，用于管理不同种类fixtures之间的contact，比如有应付多边形-多边形碰撞的，也有应付圆-圆碰撞的。</p>
+<p>先来看几个术语。</p>
+<h4 id="2-4-1-Terminology"><a href="#2-4-1-Terminology" class="headerlink" title="2.4.1. Terminology"></a>2.4.1. Terminology</h4><p><strong>Contact Point</strong>: 两个shapes接触的点。LiquidFun通过几个点来模拟contact。</p>
+<p><strong>Contact Normal</strong>：一个单位向量，常规情况下从fixtureA指向fixtureB。</p>
+<p><strong>Contact Separation</strong>：这是penetration的反面。当形状重合时separation是negative的，有可能未来版本会出现带positive separation的接触点，所以出现接触点的时候最好检查下符号。（<strong>啥？</strong>）</p>
+<p><strong>Contact Manifold</strong>：<del>（流形，出现力）</del>在两个凸多边形之间接触时可能会有两个接触点，它们共用同一个法向量，所以被组合在一个流形（=一个近似接触区域）里。</p>
+<p><strong>Normal Impulse</strong>：normal force（我猜是法向力）是在接触点处防止形状互相穿透的力。为了便利，LiquidFun使用冲量。<code>法向冲量 = 法向力 * time_step</code>。</p>
+<p><strong>Tangent Impulse</strong>：切向力在接触点产生的（与摩擦有关）冲量。</p>
+<p><strong>Contact Ids</strong>：</p>
+<p>LiquidFun试图循环使用一个time step产生的接触力结果，作为下一个time step的初始猜测值。LiquidFun使用contact id在time step之间匹配接触点。这些id包含了几何特征的指标，以区分各个接触点。</p>
+<p>contact在两个fixture的AABB重合的时候创建。有些时候collision filtering会阻止contact的创造。AABB停止重合的时候contact会被摧毁。</p>
+<p>所以你可能会注意到，有些时候两个fixture不接触的时候contact也会被创造。这就是“鸡生蛋”的问题。如果contact对象不创建，我们就无法通过contact来分析碰撞，从而真正知道contact对象到底是不是需要被创建的。如果形状没接触，我们可以立刻把contact删掉，但也可以干脆等到AABB不重合了。LiquidFun决定采用后一种方式，效率更高。</p>
+<h4 id="2-4-2-Contact类"><a href="#2-4-2-Contact类" class="headerlink" title="2.4.2  Contact类"></a>2.4.2  Contact类</h4><p>之前已经说过，contact类是由LiquidFun创造和消灭的，Contact对象并不由用户创造。当然，你可以获取其中信息并与其互动。</p>
+<p>你可以访问raw contact manifold：</p>
+<pre><code class="hljs C++"><span class="hljs-function">b2Manifold* <span class="hljs-title">GetManifold</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">const</span> b2Manifold* <span class="hljs-title">GetManifold</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;</code></pre>
+
+<p>理论上你可以修改manifold，但不资瓷，除非需要进阶用法。</p>
+<p>还有一个helper function来访问b2WorldManifold：</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">GetWorldManifold</span><span class="hljs-params">(b2WorldManifold* worldManifold)</span> <span class="hljs-keyword">const</span></span>;</code></pre>
+
+<p>它使用了物体的当前位置来计算接触点的世界坐标。</p>
+<p>Sensors（不碰撞的fixture）不会创造manifold，所以你可以这样使用：（对于non-sensor也可以啦）</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">bool</span> touching = sensorContact-&gt;IsTouching();</code></pre>
+
+<p>可以从contact那里获知fixture，进一步获知body的信息：</p>
+<pre><code class="hljs C++">b2Fixture* fixtureA = myContact-&gt;GetFixtureA();
+b2Body* bodyA = fixture-&gt;GetBody();
+MyActor* actorA = (MyActor*)bodyA-&gt;GetUserData();</code></pre>
+
+<p>你也可以禁用contact，这只在b2ContactListener::PreSolve里面有用，见下文。</p>
+<h4 id="2-4-3-获取Contact"><a href="#2-4-3-获取Contact" class="headerlink" title="2.4.3  获取Contact"></a>2.4.3  获取Contact</h4><p>可以用几种方式获取contact。</p>
+<p>（1）可以通过world/body的结构直接访问；</p>
+<ul>
+<li><p>可以遍历world里面所有的contact：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">for</span> (b2Contact* c = myWorld-&gt;GetContactList(); c; c = c-&gt;GetNext())
+&#123;
+    <span class="hljs-comment">// process</span>
+&#125;</code></pre>
+</li>
+<li><p>可以遍历一个body上产生的所有contact，他们都通过边连接存在一个图里：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">for</span> (b2ContactEdge* ce = myBody-&gt;GetContactList(); ce; ce = ce-&gt;next)
+&#123;
+    b2Contact* c = ce-&gt;contact;
+    <span class="hljs-comment">//process</span>
+&#125;</code></pre>
+
+</li>
+</ul>
+<p>（2）可以实现一个contact监视器类：见下文</p>
+<blockquote>
+<p>注：使用world/body遍历可能会漏掉一些在time step中间短暂出现的contact，使用监视器能得到最为准确的结果。</p>
+</blockquote>
+<h4 id="2-4-4-Contact监视器"><a href="#2-4-4-Contact监视器" class="headerlink" title="2.4.4  Contact监视器"></a>2.4.4  Contact监视器</h4><p>监视器支持几种不同的事件：开始，结束，pre-solve, post-solve。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyContactListener</span> :</span> <span class="hljs-keyword">public</span> b2ContactListener
+&#123;
+ <span class="hljs-keyword">public</span>:
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">BeginContact</span><span class="hljs-params">(b2Contact* contact)</span> </span>&#123;&#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">EndContact</span><span class="hljs-params">(b2Contact* contact)</span> </span>&#123;&#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contact* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span> </span>&#123;&#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PostSolve</span><span class="hljs-params">(b2Contact* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span> </span>&#123;&#125;
+&#125;;</code></pre>
+
+<blockquote>
+<p>注：不要保留送到b2ContactListener的指针的引用。你应该使用深拷贝将接触点的数据拷贝到你自己的buffer里，例子见下文。</p>
+</blockquote>
+<p>在运行的时候，可以创造listener的一个对象，并且使用b2World::SetContactListener函数登记。确保在world对象的生命期内监视器都是可以访问的。</p>
+<p>（1）<strong>开始</strong>：当两个fixture重合的时候调用，sensor和non-sensor都会调用。这类事件只会在time step内部出现。</p>
+<p>（2）<strong>结束</strong>：当两个fixture停止重合的时候调用，sensor和non-sensor都会。如果一个body被摧毁的时候也会调用，所以可能在time step之外出现此类事件。</p>
+<p>（3）<strong>Pre-Solve</strong>：在碰撞检测结束之后、碰撞解决之前调用。这给了用户根据当前配置禁用contact的机会。例如：你可以使用这个callback实现一个一边倒的平台（？），并且调用b2Contact::SetEnabled(false)。每次在处理碰撞的时候contact都会被重新启用，所以每个time-step都要禁用contact。由于碰撞检测是连续的，pre-solve事件可能会在每个time step每个contact被触发多次。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//一段不太明白的代码</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contact* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span></span>
+<span class="hljs-function"></span>&#123;
+    b2WorldManifold worldManifold;
+    contact-&gt;GetWorldManifold(&amp;worldManifold);
+    
+    <span class="hljs-comment">//如果平台过于平了</span>
+    <span class="hljs-keyword">if</span> (worldManifold.normal.y &lt; <span class="hljs-number">-0.5f</span>)
+    &#123;
+        <span class="hljs-comment">//就禁止接触？</span>
+        contact-&gt;SetEnabled(<span class="hljs-literal">false</span>);
+    &#125;
+&#125;</code></pre>
+
+<p>pre-solve事件也可以用来决定poitn state还有碰撞的来袭速度：</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contac* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span></span>
+<span class="hljs-function"></span>&#123;
+    b2WorldManifold worldManifold;
+    contact-&gt;GetWorldManifold(&amp;worldManifold);
+    b2PointState state1[<span class="hljs-number">2</span>], state2[<span class="hljs-number">2</span>];
+    b2GetPointStates(state1, state2, oldManifold, contact-&gt;GetManifold);
+    <span class="hljs-keyword">if</span> (state2[<span class="hljs-number">0</span>] == b2_addState)
+    &#123;
+        <span class="hljs-keyword">const</span> b2Body* bodyA/B = contact-&gt;GetFixtureA/B()-&gt;GetBody();
+        b2Vec2 <span class="hljs-built_in">point</span> = worldManifold.points[<span class="hljs-number">0</span>];
+        b2Vec2 vA/B = bodyA/B-&gt;GetLinearVelocityFromWorldPoint(<span class="hljs-built_in">point</span>);
+        float32 approachVelocity = b2Dot(vB - vA, worldManifold.normal);
+        <span class="hljs-keyword">if</span> (approachVelocity &gt; <span class="hljs-number">1.0f</span>)
+        &#123;
+            MyPlayCollisionSound();
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>（4）<strong>Post-Solve</strong>：</p>
+<p>​    post-solve事件中可以收集碰撞的冲量数据。</p>
+<p>​    你可能很想在游戏中基于contact的callback函数改变物理世界情况。例如，你可能想使得某个碰撞触发角色或刚体的受损。但LiquidFun不允许你在callback函数里更改物理世界的情况，因为你摧毁的物体可能正在被LiquidFun处理，这可能导致孤儿指针。</p>
+<p>​    建议的处理方法是：把所有的接触数据存下来，然后在time step之后再<strong>立刻</strong>处理。这时候你可以更改物理世界，但仍然要小心不要让接触数据缓冲区里出现孤儿指针。testbed里提供了不产生孤儿指针的安全的contact point处理的例子。</p>
+<p>​    下面这段代码展示了处理contact buffer的时候应当怎样处理orphaned bodies。这是一段摘要。所有的接触点都在b2ContactPoint数组m_points里存储。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//接下来通过接触点数据删除一些物体</span>
+<span class="hljs-comment">//一定要缓存删除的物体的数据，因为可能会在多个接触点中存在，不保存会删除空指针</span>
+<span class="hljs-keyword">const</span> int32 k_maxNuke = <span class="hljs-number">6</span>;
+b2Body* nuke[k_maxNuke];
+int32 nukeCount = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">//遍历contact缓冲，将接触物体比自己重的的物体删除</span>
+<span class="hljs-keyword">for</span> (int32 i = <span class="hljs-number">0</span>; i &lt; m_pointCount; ++i)
+&#123;
+    ContactPoint* <span class="hljs-built_in">point</span> = m_points + i;
+    b2Body* bodyA/B = <span class="hljs-built_in">point</span>-&gt;fixtureA/B-&gt;GetBody();
+    float32 massA/B = bodyA/B-&gt;GetMass();
+    <span class="hljs-keyword">if</span> (massA &gt; <span class="hljs-number">0.0f</span> &amp;&amp; massB &gt; <span class="hljs-number">0.0f</span>)
+    &#123;
+        <span class="hljs-keyword">if</span> (massB &gt; massA)
+        &#123;
+            nuke[nukeCount++] = bodyA;
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            nuke[nukeCount++] = bodyB;
+        &#125;
+        <span class="hljs-keyword">if</span> (nukeCount == k_maxNuke)
+        &#123;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+    <span class="hljs-comment">//排序，去重</span>
+    <span class="hljs-built_in">std</span>::sort(nuke, nuke + nukeCount);
+    int32 i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (i &lt; nukeCount)
+    &#123;
+        b2Body* b = nuke[i++];
+        <span class="hljs-keyword">while</span> (i &lt; nukeCount &amp;&amp; nuke[i] == b)
+        &#123;
+            ++i;
+        &#125;
+        m_world-&gt;DestroyBody(b);
+    &#125;
+&#125;</code></pre>
+
+<h4 id="2-4-5-Contact-Filtering"><a href="#2-4-5-Contact-Filtering" class="headerlink" title="2.4.5  Contact Filtering"></a>2.4.5  Contact Filtering</h4><p>这是用来阻止部分物体之间的互动的。（例如，创造一个门，只有特定的角色能穿过）</p>
+<p>LiquidFun允许你通过实现b2ContactFilter类来自定义contact filtering。这个类要求你实现一个ShouldCollide函数，接收两个b2Shape指针，返回是否该碰撞。</p>
+<p>默认实现使用了之前定义过的b2FilterData。</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">b2ContactFilter::ShouldCollide</span><span class="hljs-params">(b2Fixture* fixtureA, b2Fixture* fixtureB)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> b2Filter&amp; filterA/B = fixtureA/B-&gt;GetFilterData();
+    <span class="hljs-keyword">if</span> (filterA.groupIndex == filterB.groupIndex &amp;&amp; filterA.groupIndex != <span class="hljs-number">0</span>)
+    &#123;
+        <span class="hljs-keyword">return</span> filterA.groupIndex &gt; <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-keyword">bool</span> collide = (filterA.maskbits &amp; filterB.categoryBits) != <span class="hljs-number">0</span> &amp;&amp; (filterA.categoryBits &amp; filterB.maskbits) != <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> collide;
+&#125;</code></pre>
+
+<p>你可以在运行的时候创造一个你自己的contact filter，然后使用b2World::SetContactFilter来注册。请确保在world生命期内它始终可以访问。</p>
+<p><code>world-&gt;SetContactFilter(&amp;filter);</code></p>
+<h3 id="2-5-World类"><a href="#2-5-World类" class="headerlink" title="2.5  World类"></a>2.5  World类</h3><p>b2World类包含了物体、关节，负责了模拟的所有部分，允许非共时的请求（AABB/ray cast/etc.）。你绝大部分的互动都是与b2World对象进行的。</p>
+<h4 id="2-5-1-创造-消灭一个世界"><a href="#2-5-1-创造-消灭一个世界" class="headerlink" title="2.5.1  创造/消灭一个世界"></a>2.5.1  创造/消灭一个世界</h4><pre><code class="hljs C++"><span class="hljs-comment">//doSleep = 物体能睡觉吗？</span>
+b2World* myWorld = <span class="hljs-keyword">new</span> b2World(gravity, doSleep);
+<span class="hljs-comment">// do something</span>
+<span class="hljs-keyword">delete</span> myWorld;</code></pre>
+
+<h4 id="2-5-2-使用世界"><a href="#2-5-2-使用世界" class="headerlink" title="2.5.2  使用世界"></a>2.5.2  使用世界</h4><p>世界类包含了创造、摧毁物体、关节的工厂。</p>
+<h4 id="2-5-3-模拟"><a href="#2-5-3-模拟" class="headerlink" title="2.5.3  模拟"></a>2.5.3  模拟</h4><p>指定time step，指定速度、位置的迭代数目。</p>
+<pre><code class="hljs C++">float32 timeStep = <span class="hljs-number">1.0f</span> / <span class="hljs-number">60.f</span>;
+int32 velocityIterations = <span class="hljs-number">10</span>;
+int32 positionIterations = <span class="hljs-number">8</span>;
+myWorld-&gt;Step(timeStep, velocityIterations, positionIterations);</code></pre>
+
+<p>在每个time step之后你都可以检查你的物体、关节，获取信息。一般你都会从物体处获得位置信息，以渲染他们。你可以在你的游戏循环的任意位置启动一个time step，但要注意做事情的顺序。</p>
+<p>例如，你应该time step之前创造物体，这样才能获取他们的碰撞数据。</p>
+<p>最好使用固定的time step。time step越大，在低帧率的场景里游戏的性能表现就越好。但一般来说，time step不应当超过1/30秒。1/60秒的time step可以使得模拟质量较高。</p>
+<p>迭代次数控制了constraint solver将遍历contact和joint多少次。迭代越好，模拟效果肯定更好。但不要将time step变大以增加迭代次数，60Hz + 10次迭代要比 30Hz + 20次迭代效果好得多。</p>
+<p>在stepping之后，应该把施加在物体上的力清零。这是通过b2World::ClearForces这个命令完成的。这可以让你在几个sub-step内都使用相同的力场。</p>
+<h4 id="2-5-4-探索世界吧！"><a href="#2-5-4-探索世界吧！" class="headerlink" title="2.5.4  探索世界吧！"></a>2.5.4  探索世界吧！</h4><p>世界是由物体、接触、关节组成的。你可以从world这里获取它们的列表并遍历。例如：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//叫醒所有物体</span>
+<span class="hljs-keyword">for</span> (b2Body* b = myWorld-&gt;GetBodyList(); b; b = b-&gt;GetNext())
+&#123;
+    b-&gt;SetAwake(<span class="hljs-literal">true</span>);
+&#125;</code></pre>
+
+<h4 id="2-5-5-AABB查询"><a href="#2-5-5-AABB查询" class="headerlink" title="2.5.5.  AABB查询"></a>2.5.5.  AABB查询</h4><p>有些时候你想要查询一个区域内的所有图形。b2World类提供了一个log(N)的使用broad-phase数据结构的函数。你可以提供一个世界坐标下的AABB，并且实现b2QueryCallback。世界会对于每个与你提供的AABB重合的AABB的fixture调用你提供的类。返回true的时候查询继续，返回false的时候查询中止。</p>
+<p>例如：如下代码找到所有可能分割了你提供的AABB的fixture，然后把它们相关的物体都唤醒：</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyQueryCallback</span> :</span> <span class="hljs-keyword">public</span> b2QueryCallback
+&#123;
+  <span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">ReportFixture</span><span class="hljs-params">(b2Fixture* fixture)</span></span>
+<span class="hljs-function">    </span>&#123;
+        b2Body* body = fixture-&gt;GetBody();
+        body-&gt;SetAwake(<span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+&#125;
+...
+MyQueryCallback callback;
+b2AABB aabb;
+aabb.lowerBound.Set(<span class="hljs-number">-1.f</span>, <span class="hljs-number">-1.f</span>);
+aabb.upperBound.Set(<span class="hljs-number">1.f</span>, <span class="hljs-number">1.f</span>);
+myWorld-&gt;Query(&amp;callback, aabb);</code></pre>
+
+<p>不要随意猜测、假设callback的顺序。</p>
+<h4 id="2-5-6-Ray-Cast"><a href="#2-5-6-Ray-Cast" class="headerlink" title="2.5.6  Ray Cast"></a>2.5.6  Ray Cast</h4><p>你可以用ray cast进行视线检查、开枪等操作。通过实现一个callback类 + 提供开始和结束点，就可以进行一次ray cast操作。</p>
+<p>world类会对每个被光线束击中的fixture调用你所提供的类。你的callback函数能调用的数据是：fixture，分割点，单位法向量，分割下来的沿光线束距离（小数）。不要随意猜测、假设callback的顺序。</p>
+<p>你将返回一个小数，来控制ray cast是否继续。返回0意味着ray cast中止，返回1意味着ray cast将假装没有击中的fixture，返回之前传入的小数意味着光线将被截断在当前的分割点。这样，你就可以ray cast一个图形/所有图形/最接近的图形（通过调整返回的分数）。</p>
+<p>甚至还可以返回-1，使得光线忽略这一个fixture，假装被击中的这个fixture不存在。</p>
+<p>例子如下：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//获取最近的形状</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyRayCastCallback</span> :</span> <span class="hljs-keyword">public</span> b2RayCastCallback
+&#123;
+  <span class="hljs-keyword">public</span>:
+    MyRayCastCallback()
+    &#123;
+        m_fixture = <span class="hljs-literal">NULL</span>;
+    &#125;
+    <span class="hljs-function">float32 <span class="hljs-title">ReportFixture</span><span class="hljs-params">(b2Fixture* fixture, <span class="hljs-keyword">const</span> b2Vec&amp; <span class="hljs-built_in">point</span>, <span class="hljs-keyword">const</span> b2Vec2&amp; normal, float32 fraction)</span></span>
+<span class="hljs-function">    </span>&#123;
+        m_fixture = fixture;
+        m_point = <span class="hljs-built_in">point</span>;
+        m_normal = normal;
+        m_fraction = fraction;
+        <span class="hljs-keyword">return</span> fraction;
+    &#125;
+    b2Fixture* m_fixture;
+    b2Vec2 m_point;
+    b2Vec2 m_normal;
+    float32 m_fraction;
+&#125;
+MyRayCastCallback callback;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">point1</span><span class="hljs-params">(<span class="hljs-number">-1.0f</span>, <span class="hljs-number">0.0f</span>)</span></span>;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">point2</span><span class="hljs-params">(<span class="hljs-number">3.0f</span>, <span class="hljs-number">1.0f</span>)</span></span>;
+myWorld-&gt;RayCast(&amp;callback, point1, point2);</code></pre>
+
+<p>由于近似的原因，ray cast可能会在你的静态环境中从多边形之间的小缝隙之间穿过去。如果这不行，请把你的多边形适当调大。</p>
+<h4 id="2-5-7-力和冲量"><a href="#2-5-7-力和冲量" class="headerlink" title="2.5.7  力和冲量"></a>2.5.7  力和冲量</h4><p>你可以在物体上应用力、力矩、冲量。当你应用力/冲量的时候，要提供负载应用的地点的世界坐标。这通常会导致一个质心上的力矩。</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ApplyForce</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; force, <span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-built_in">point</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ApplyTorque</span><span class="hljs-params">(float32 torque)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ApplyLinearImpulse</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; impulse, <span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-built_in">point</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ApplyAngularImpulse</span><span class="hljs-params">(float32 impulse)</span></span>;</code></pre>
+
+<p>应用力/力矩/冲量都会唤醒物体，有些时候你不想这样（例如，提供一个恒定力，但希望物体睡着提供效率）。这个时候可以这样做：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">if</span> (myBody-&gt;IsAwake() == <span class="hljs-literal">true</span>)
+&#123;
+    myBody-&gt;ApplyForce(myForce, myPoint);
+&#125;</code></pre>
+
+<p>你可以给粒子/粒子组提供力/冲量，但你并不能在任一个点提供。事实上，力/冲量将被应用在每个粒子的中心上。</p>
+<p><code>myParticleGroup-&gt;ApplyLinearImpulse(impulse);</code></p>
+<h4 id="2-5-8-坐标转换"><a href="#2-5-8-坐标转换" class="headerlink" title="2.5.8  坐标转换"></a>2.5.8  坐标转换</h4><p>body类为你提供了点、向量在局部、世界坐标之间的转换。不明白这两个概念的话（？<strong>是我</strong>）请读*”Essential Mathematics for Games and Interactive Applications* by Jim Van Verth &amp; Lars Bishop。这些函数在内联下很快：</p>
+<pre><code class="hljs C++"><span class="hljs-function">b2Vec2 <span class="hljs-title">GetWorldPoint</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; localPoint)</span></span>;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">GetWorldVector</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; localVector)</span></span>;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">GetLocalPoint</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; worldPoint)</span></span>;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">GetLocalVector</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; worldVector)</span></span>;</code></pre>
+
+<h4 id="2-5-9-列表"><a href="#2-5-9-列表" class="headerlink" title="2.5.9  列表"></a>2.5.9  列表</h4><p>你可以遍历一个body上的fixture。这主要是在你需要访问fixture的用户数据的时候管用：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">for</span> (b2Fixture* f = body-&gt;GetFixtureList(); f; f = f-&gt;GetNext())
+&#123;
+    MyFixtureData* data = (MyFixtureData*)f-&gt;GetUserData();
+    <span class="hljs-comment">//DO SOMETHING</span>
+&#125;</code></pre>
+
+<p>遍历一个物体的关节list的方式也类似。</p>
+<p>body也提供了一个相关contact的列表。但要小心，因为列表里不一定包含了所有在上一个time step存在过的contact。</p>
+
             </article>
             <hr>
             <div>
@@ -945,6 +1245,29 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
   
 
   
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
+
+  
 
   
 
@@ -957,6 +1280,31 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
         <span>Fluid</span></a>
     </div>
     
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
 
     
 
@@ -982,6 +1330,186 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
   <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
   <script  src="/js/clipboard-use.js" ></script>
 
+
+
+  <script defer>
+  (function () {
+    // 查询存储的记录
+    function getRecord(Counter, target) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {target, time: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    }
+
+    // 发起自增请求
+    function increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    }
+
+    // 构建自增请求体
+    function buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "time": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    }
+
+    // 校验是否为有效的 UV
+    function validUV() {
+      var key = 'LeanCloud_UV_Flag';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    }
+
+    function addCount(Counter) {
+      var enableIncr = 'true' === 'true' && window.location.hostname !== 'localhost';
+      var getterArr = [];
+      var incrArr = [];
+
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#leancloud-site-pv-container');
+      if (pvCtn || enableIncr) {
+        var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+          incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-pv');
+          if (ele) {
+            ele.innerText = record.time + 1;
+            if (pvCtn) {
+              pvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#leancloud-site-uv-container');
+      if (uvCtn || enableIncr) {
+        var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+          var vuv = validUV();
+          vuv && incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-uv');
+          if (ele) {
+            ele.innerText = record.time + (vuv ? 1 : 0);
+            if (uvCtn) {
+              uvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 如果是文章，请求文章的浏览数，并自增
+      if ('true' === 'true') {
+        var viewCtn = document.querySelector('#leancloud-post-views-container');
+        if (viewCtn || enableIncr) {
+          var target = decodeURI('/2020/07/08/LiquidFun%E6%96%87%E6%A1%A3%E7%AE%80%E8%AE%B0/');
+          var viewGetter = getRecord(Counter, target).then((record) => {
+            incrArr.push(buildIncrement(record.objectId))
+            if (viewCtn) {
+              var ele = document.querySelector('#leancloud-post-views');
+              if (ele) {
+                ele.innerText = (record.time || 0) + 1;
+                viewCtn.style.display = 'inline';
+              }
+            }
+          });
+          getterArr.push(viewGetter);
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && increment(Counter, incrArr);
+        })
+      }
+    }
+
+    var app_id = 'yzJgerhadrHUF0U5I8IPKjIS-gzGzoHsz'
+    var app_key = 'qQ0YN6yVdlMnmaxqWDCvTc7X'
+    var server_url = 'https://yzjgerha.lc-cn-n1-shared.com'
+
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': app_id,
+            'X-LC-Key': app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+
+      addCount(Counter);
+    }
+
+    var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(resp => resp.json())
+        .then(({api_server}) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
 
 
 
@@ -1041,6 +1569,8 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
       placement: "right",
       visible: "hover",
       
+      icon: "§"
+      
     };
     var el = "h1,h2,h3,h4,h5,h6".split(",");
     var res = [];
@@ -1092,6 +1622,19 @@ jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code
 
 
 
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 
