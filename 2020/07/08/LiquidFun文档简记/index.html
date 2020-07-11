@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.3k 字
+      6.6k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      43
+      82
        分钟
     </span>
   
@@ -210,6 +210,12 @@
       <div class="container nopadding-md" id="board-ctn">
         <div class="py-5" id="board">
           <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：20 hours ago
+                
+              </p>
             
             <article class="markdown-body">
               <h2 id="0-Pre-Everything"><a href="#0-Pre-Everything" class="headerlink" title="0. Pre-Everything"></a>0. Pre-Everything</h2><h3 id="0-0-Reference"><a href="#0-0-Reference" class="headerlink" title="0.0 Reference"></a>0.0 Reference</h3><p><a href="http://www.ladeng6666.com/blog/?cat=8" target="_blank" rel="noopener">Blog：拉小登，上面有Box2D部分概念和应用</a></p>
@@ -593,7 +599,258 @@ dynamicBody = <span class="hljs-literal">NULL</span>;</code></pre>
 <li>LiquidFun allows you to avoid destroying bodies by deleting your b2World object, which does all the cleanup work for you. However, you should be mindful to nullify body pointers that you keep in your game engine. (？)</li>
 <li>删除Body时其上附着的fixture和joint也会被自动删除。</li>
 </ul>
+<h4 id="2-1-4-使用bodies"><a href="#2-1-4-使用bodies" class="headerlink" title="2.1.4 使用bodies"></a>2.1.4 使用bodies</h4><p>（一）<strong>质量数据</strong></p>
+<p>物体都具有：</p>
+<ul>
+<li>质量（标量）</li>
+<li>质心（2维向量）</li>
+<li>转动惯量（标量）</li>
+</ul>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5C%E8%B4%A8%E9%87%8F%E6%95%B0%E6%8D%AE.png" srcset="/img/loading.gif" alt="image-20200710112021317"></p>
+<p>静态物体的质量=转动惯量=0；当一个物体被设置为不能转动时，转动惯量也为0。</p>
+<p>一般来说，物体的质量性质在其上添加fixture时自动生成，当然也可以在运行时使用以下命令改变。</p>
+<p><code>void SetMassData(const b2MassData* data)；</code></p>
+<p>如此暴力改变后，你可以通过如下命令将其恢复为由fixtures决定的自然质量：</p>
+<p><code>void ResetMassData();</code></p>
+<p>可以通过一系列<code>GetXxxx() const</code>的函数获得质量数据。</p>
+<p>（二）<strong>状态数据</strong></p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetType</span><span class="hljs-params">(b2BodyType type)</span></span>;
+<span class="hljs-function">b2BodyType <span class="hljs-title">GetType</span><span class="hljs-params">()</span></span>;
 
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetBullet</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> flag)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">IsBullet</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetSleepingAllowed</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> flag)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">IsSleepingAllowed</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetAwake</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> flag)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">IsAwake</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetActive</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> flag)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">IsActive</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetFixedRotation</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> flag)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">IsFixedRotation</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;</code></pre>
+
+<p>（三）<strong>位置和速度</strong></p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">SetTransform</span><span class="hljs-params">(<span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-built_in">position</span>, float32 angle)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">const</span> b2Transform&amp; <span class="hljs-title">GetTransform</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-title">GetPosition</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+<span class="hljs-function">float32 <span class="hljs-title">GetAngle</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;</code></pre>
+
+<pre><code class="hljs C++"><span class="hljs-comment">//质心位置</span>
+<span class="hljs-function"><span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-title">GetWorldCenter</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//in world coordinates</span>
+<span class="hljs-function"><span class="hljs-keyword">const</span> b2Vec2&amp; <span class="hljs-title">GetLocalCenter</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>; <span class="hljs-comment">//in local coordinates</span></code></pre>
+
+<p>获取到的线速度是针对于质心的。</p>
+<h3 id="2-2-Fixtures"><a href="#2-2-Fixtures" class="headerlink" title="2.2 Fixtures"></a>2.2 Fixtures</h3><p>形状是可以独立于物体存在的。b2Fixture类就专门负责将形状连接到物体上。</p>
+<p>一个物体可以有0/多个fixtures，有多个fixtures的物体被称为复合物体。</p>
+<p>fixtures包含以下组件：</p>
+<ul>
+<li>1*shape</li>
+<li>broad-phase检测的代理</li>
+<li>密度，friction（摩擦），restitution（恢复系数）</li>
+<li>collision filtering flags（？）</li>
+<li>指向parent body的指针</li>
+<li>用户数据</li>
+<li>sensor flag</li>
+</ul>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cfixture.png" srcset="/img/loading.gif" alt="image-20200710130809558"></p>
+<h4 id="2-2-1-创建fixture"><a href="#2-2-1-创建fixture" class="headerlink" title="2.2.1  创建fixture"></a>2.2.1  创建fixture</h4><p>使用如下命令创建fixture：</p>
+<p><code>b2Fixture* myFixture = myBody-&gt;CreateFixture(&amp;fixtureDef);</code></p>
+<p>不需要保存fixture的指针，因为parent body被析构时会将其上附着的fixture顺带删除。</p>
+<p>可以通过parent body删除其上的fixture（由此可以为能打碎的物体建模）：</p>
+<p><code>myBody-&gt;DestroyFixture(myFixture)；</code></p>
+<h4 id="2-2-2-密度"><a href="#2-2-2-密度" class="headerlink" title="2.2.2  密度"></a>2.2.2  密度</h4><p>fixture的密度是用于计算parent body的质量数据的。<strong>密度可以为0/正数。</strong></p>
+<p><strong>最好对所有的fixtures都使用相似的密度，能提高效率。</strong></p>
+<p>改变密度时，body的质量<strong>并不会自动变化，必须调用下列命令</strong>：</p>
+<p><code>body-&gt;ResetMassData();</code></p>
+<h4 id="2-2-3-摩擦"><a href="#2-2-3-摩擦" class="headerlink" title="2.2.3  摩擦"></a>2.2.3  摩擦</h4><ul>
+<li><p>LiquidFun支持静摩擦和动摩擦，但两者系数相同。</p>
+</li>
+<li><p>LiquidFun使用库仑摩擦力（即摩擦力与法向力成正比）。</p>
+</li>
+<li><p>摩擦系数通常介于0-1之间，但可以是任何非负值。</p>
+</li>
+<li><p>两个物体摩擦时，采用的摩擦系数为：sqrtf( a-&gt;friction * b-&gt;friction )</p>
+</li>
+<li><p>上述默认的混合摩擦系数算法可以通过<code>b2Contact::SetFriction</code>改变，这是在<code>b2ContactListener callback</code>里完成的。</p>
+</li>
+</ul>
+<h4 id="2-2-4-恢复系数"><a href="#2-2-4-恢复系数" class="headerlink" title="2.2.4  恢复系数"></a>2.2.4  恢复系数</h4><ul>
+<li>用于让物体弹起来！</li>
+<li>通常设置在0-1之间：0-不弹，1-刚好弹回到原位；</li>
+<li>采用<code>b2Max( a-&gt;restitution, b-&gt;restitution )</code>进行混合（这样弹力球就可以在完全不弹的桌面上弹来弹去了）</li>
+<li>可以使用<code>b2Contact::SetRestitution</code>改变，是在…里完成的。</li>
+<li>当一个shape有多个contact时，回弹是近似模拟的。</li>
+<li>碰撞速度很小时，LiquidFun会使用非弹性碰撞防止jitter。</li>
+</ul>
+<h4 id="2-2-5-Filtering"><a href="#2-2-5-Filtering" class="headerlink" title="2.2.5  Filtering"></a>2.2.5  Filtering</h4><p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cfilter.png" srcset="/img/loading.gif" alt="image-20200710131000291"></p>
+<ul>
+<li>Filtering用于阻止特定fixture之间发生碰撞；</li>
+<li>LiquidFun支持16个碰撞类（<strong>categories</strong>），对每个fixture你可以规定它属于哪个类，可以与哪些类碰撞。这是通过<strong>位屏蔽</strong>操作的</li>
+</ul>
+<blockquote>
+<p>&amp;1 不变； &amp;0 变0。    |1 变1； |0 不变；</p>
+<p>置位：变为1        复位：变为0</p>
+<p><strong>位屏蔽</strong>：</p>
+<p>屏蔽字中与要检查的位对应的位全部为1，而被屏蔽的位全部为0。</p>
+<p>为了检查一个字节中的某些位，可以让这个字节和屏蔽字(bit mask)进行按位与操作(C的按位与运算符为＆)。</p>
+<p>为了置位所需的位，可以让数据和屏蔽字进行按位或操作(C的按位或运算符为|)。</p>
+<p>为了清除所需的位，可以让数据和对屏蔽字按位取反所得的值进行按位与操作。</p>
+</blockquote>
+<p>碰撞出现的法则如下：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//如果A被B屏蔽后还有其他位 且 B被A屏蔽后还有其他位</span>
+<span class="hljs-keyword">if</span> ((catA &amp; maskB) != <span class="hljs-number">0</span> &amp;&amp; (catB &amp; maskA) != <span class="hljs-number">0</span>)
+&#123;
+    <span class="hljs-comment">// fixtures can collide</span>
+&#125;</code></pre>
+
+<ul>
+<li><p>LiquidFun还支持碰撞组（<strong>group</strong>）：正数index的同组物品总会碰撞，复数index的同组物品总不会碰撞。不同组之间也是通过category和mask bits来判断是否碰撞的（换而言之，group比category优先级更高）。</p>
+</li>
+<li><p>还有一些其他的filtering会出现：</p>
+<ul>
+<li>静态/kinematic物体上的fixture只能与dynamic物体碰撞；</li>
+<li>同一物体上的fixture不碰撞；</li>
+<li>你可以启用/禁用通过joint连接的物体之上fixture的碰撞。</li>
+</ul>
+</li>
+<li><p>若要在fixture创造后改变collision filtering , 你可以通过<code>b2Fixture::GetFilterData</code>和<code>b2Fixture::SetFilterData</code>来获取和设置b2Filter的结构。这直到下一个time step之前都不会增/减contacts。</p>
+</li>
+</ul>
+<h4 id="2-2-6-Sensors"><a href="#2-2-6-Sensors" class="headerlink" title="2.2.6  Sensors"></a>2.2.6  Sensors</h4><p>什么时候两个fixtures重叠但不发生碰撞呢？这是由sensors决定的。</p>
+<p>sensors是一种专门用于检测碰撞、但不触发碰撞反应的fixture。</p>
+<p>你可以把任一个fixture设置为sensor，可以是static/kinematic/dynamic。</p>
+<p>记住，一个body可以有多个fixture，这可以任何solid fixture和sensor的混合。</p>
+<p>sensor仅当至少一个body是动态的时候才会形成contact。</p>
+<p>sensor不会生成接触点。</p>
+<p>可以通过以下两种方式得知sensor的状态：</p>
+<p><code>b2Contact::IsTouching</code></p>
+<p><code>b2ContactListener::BeginContact and EndContact</code></p>
+<h3 id="2-3-Joints"><a href="#2-3-Joints" class="headerlink" title="2.3. Joints"></a>2.3. Joints</h3><p>Joints是用来约束bodies在世界中的状态/约束bodies之间的关系的，在游戏世界中比较典型的有Ragdolls(布娃娃)、teeter(跷跷板)、pulley(滑轮)。Joints可以以很多方式连接，形成有趣的动画。</p>
+<p>有些Joints提供limits，使得运动受限。</p>
+<p>有些Joints提供motos，可以控制joint运动的速度，直到施加的力/力矩超过预先设置的限度；可以控制位置（通过调整速度使其运动）；可以模拟joint friction：将joint的速度设为0，提供一个较小、但能起决定作用的力/力矩，则motor会试图阻止joint运动，直到负载过重。</p>
+<h4 id="2-3-1-Joint的定义"><a href="#2-3-1-Joint的定义" class="headerlink" title="2.3.1  Joint的定义"></a>2.3.1  Joint的定义</h4><p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource_posts%5Cjointdef.png" srcset="/img/loading.gif" alt="image-20200710154221125"></p>
+<ul>
+<li>Joint是通过b2JointDef这个类<strong>及其衍生</strong>（见上）定义的；</li>
+<li>joint连接了两个不同的物体，其中一个可以是静态的。在static, kinematic物体之间的joint是合法的，但没有效果且会占用运行时间；</li>
+<li>你可以为任一类关节指明用户数据，也可以提供flag允许相连的物体之间碰撞（默认情况下阻止）。</li>
+<li>大多jointdef都需要提供几何数据。通常joint是由anchor point（锚点：在相连物体中固定的点）的局部坐标定义的（因此，即使现在的物体变化违背了joint的限制，也同样可以定义/指明joint，这在游戏reload的时候是常见的）。</li>
+<li>有些jointdef还需要知道两个物体之间的默认相对夹角。</li>
+<li>大多数joint都有使用当前物体变化定义joint的初始化函数（因为提供几何数据非常麻烦），但这些函数只应被用于制作原型。</li>
+</ul>
+<h4 id="2-3-2-Joint-Factory"><a href="#2-3-2-Joint-Factory" class="headerlink" title="2.3.2  Joint Factory"></a>2.3.2  Joint Factory</h4><p>使用world类中提供的factory来生产关节：</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//Example: RevoluteJoint</span>
+b2RevoluteJointDef jointDef;
+jointDef.bodyA/B = myBodyA/B;
+jointDef.anchorPoint = myBodyA-&gt;GetCenterPosition();
+
+b2RevoluteJoint* joint = (b2RevoluteJoint*)myWorld-&gt;CreateJoint(&amp;jointDef);
+
+<span class="hljs-comment">//DO SOMETHING</span>
+
+myWorld-&gt;DestroyJoint(joint);
+joint = <span class="hljs-literal">NULL</span>;  <span class="hljs-comment">//防止太nasty的崩溃</span></code></pre>
+
+<p><strong>重要：但凡关节连接的一个物体被摧毁，joint也会被摧毁！</strong></p>
+<h4 id="2-3-3-使用Joints"><a href="#2-3-3-使用Joints" class="headerlink" title="2.3.3. 使用Joints"></a>2.3.3. 使用Joints</h4><p>许多模拟创造了关节后，在摧毁前就不会再调用它们。当然，在关节中有许多有用的数据可以帮你让模拟变得更加生动。</p>
+<p>首先，你可以获取物体、锚点、用户数据：</p>
+<pre><code class="hljs C++"><span class="hljs-function">b2Body* <span class="hljs-title">GetBodyA</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function">b2Body* <span class="hljs-title">GetBodyB</span><span class="hljs-params">()</span></span>;
+
+<span class="hljs-function">b2Vec2 <span class="hljs-title">GetAnchorA</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">GetAnchorB</span><span class="hljs-params">()</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">GetUserData</span><span class="hljs-params">()</span></span>;</code></pre>
+
+<p>所有关节都有reaction力/力矩，也即在锚点处被施加向body 2的力（见Distance Joint中的图）。可以使用反应力破坏关节，或触发其它游戏事件。</p>
+<p>但这两个函数挺慢的，不要随便调用：</p>
+<pre><code class="hljs C++"><span class="hljs-function">b2Vec2 <span class="hljs-title">GetReactionForce</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function">float32 <span class="hljs-title">GetReactionTorque</span><span class="hljs-params">()</span></span>;</code></pre>
+
+<p>接下来介绍各种奇形怪状的joint。</p>
+<h5 id="2-3-3-1-Distance-Joint"><a href="#2-3-3-1-Distance-Joint" class="headerlink" title="2.3.3.1  Distance Joint"></a>2.3.3.1  Distance Joint</h5><p>最简单的joint，保持两个物体上各一点之间的距离恒定（应该在两个物体已经就位的情况下定义，指定两个锚点的世界坐标）。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Creaction.png" srcset="/img/loading.gif" alt="image-20200710160614198"></p>
+<pre><code class="hljs C++">b2DistanceJointDef jointDef;
+jointDef.Initialize(BodyA, BodyB, worldAnchorA, worldAnchorB);
+jointDef.collideConnected = <span class="hljs-literal">true</span>;</code></pre>
+
+<p>Distance Joint也可以被做成柔性连接，就像弹簧阻尼那样。方法是调整定义中的两个常量：frequency和damping ratio。</p>
+<p>frequency就像吉他弦的振动频率一样，以赫兹为单位，一般来说它是time step的频率的一半。（与Nyquist frequency有关，不查了/kkl）。</p>
+<p>damping ratio是无量纲的，通常介于0-1之间，但可以更大。在此例中，damping是关键的（所有震动都应该消失）。</p>
+<h5 id="2-3-3-2-Revolute-Joint-旋转关节"><a href="#2-3-3-2-Revolute-Joint-旋转关节" class="headerlink" title="2.3.3.2. Revolute Joint(旋转关节)"></a>2.3.3.2. Revolute Joint(旋转关节)</h5><p>旋转关节强迫两个物体共享一个锚点，通常被叫做hinge point（铰点）。旋转关节只有一个自由度：两个物体之间的相对旋转角度，也即joint angle。<strong>物体B绕锚点逆时针绕时角度为正，用弧度计算，初始化时角度默认为0。</strong></p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Crevolute.png" srcset="/img/loading.gif" alt="image-20200710162449344"></p>
+<p>关节的初始化函数假设两个物体已经就位，如下例：</p>
+<pre><code class="hljs C++">b2RevoluteJointDef jointDef;
+jointDef.Initialize(myBodyA, myBodyB, myBodyA-&gt;GetWorldCenter());</code></pre>
+
+<p>你可以通过limit和motor来控制关节。</p>
+<p>limit可以使得旋转角度落在一定区间内。一般来说，这个区间应当包括0，否则在模拟开始时关节将暴走。</p>
+<p>motor可以允许你指定joint的角速度（角度对事件求导），可以为正可以为负。motor可以有无穷的力，但这不是我们所希望的，想想这个问题：</p>
+<blockquote>
+<p>如果无穷的力遇上了不能动的物体怎么办？（超棒的矛和超棒的盾）</p>
+</blockquote>
+<p>所以最好给motor提供一个力矩的上限。motor会保持以设定速度运行，除非维持这一状态所需的力矩超出了所设定的最大值，此时关节可能变慢/倒过来转。</p>
+<p>你可以使用motor来模拟joint friction。把joint的速度设为0，把力矩上线设的小但别太小。负载超过这个值时关节就会开始运动。（改的例子见Joints这一节）。</p>
+<p>通过一系列Get和Set函数获取/改变（每个time step都可以改）关节的角度、速度、力矩。</p>
+<p>joint motor有非常有趣的特性，你可以每个time step都改变joint的速度，从而让它像钟摆一样动：</p>
+<p><code>myJoint-&gt;SetMotorSpeed(cosf(0.5f * time));</code></p>
+<p>也可以使用joint motor来追踪想要的角度：</p>
+<pre><code class="hljs C++">float32 angleError = myJoint-&gt;GetJointAngle() - angleTarget;
+float32 gain = <span class="hljs-number">0.1f</span>;
+myJoint-&gt;SetMotorSpeed(-gain * angleError);
+<span class="hljs-comment">//gain别设太大</span></code></pre>
+
+<h5 id="2-3-3-3-Prismatic-Joint-平移关节"><a href="#2-3-3-3-Prismatic-Joint-平移关节" class="headerlink" title="2.3.3.3 Prismatic Joint(平移关节)"></a>2.3.3.3 Prismatic Joint(平移关节)</h5><p>平移关节允许两个物体沿着某个轴发生相对滑动，不允许发生相对转动。因此它也只有一个自由度。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cprismatic.png" srcset="/img/loading.gif" alt="image-20200710165307318"></p>
+<p>平移关节的定义和旋转关节很相似，只需要把角度换成平移、力矩换成力即可。由此可以得到平移关节带limit, motor的一个定义：</p>
+<pre><code class="hljs C++">b2PrismaticJointDef jointDef;
+<span class="hljs-function">b2Vec2 <span class="hljs-title">worldAxis</span><span class="hljs-params">(<span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>)</span></span>;
+jointDef.Initialize(BodyA, BodyB, BodyA-&gt;GetWorldCenter(), worldAxis);
+
+jointDef.lower/upperTranslation = <span class="hljs-number">-5.0f</span>/<span class="hljs-number">2.5f</span>;
+jointDef.enableLimit = <span class="hljs-literal">true</span>;
+
+jointDef.maxMotorForce = <span class="hljs-number">1.0f</span>;
+jointDef.motorSpeed = <span class="hljs-number">0.0f</span>;
+jointDef.enableMotor = <span class="hljs-literal">true</span>;</code></pre>
+
+<p>旋转关节有一个未被指明的轴朝向屏幕外。平移关节则需要指明一个在屏幕内的轴，轴在两个物体间被固定，且跟随他们运动。</p>
+<p>默认初始化时，平移为0，所以平移range应当包含0。</p>
+<p>一样，有一系列Get和Set。</p>
+<h5 id="2-3-3-4-Pulley-Joint-滑轮关节"><a href="#2-3-3-4-Pulley-Joint-滑轮关节" class="headerlink" title="2.3.3.4 Pulley Joint(滑轮关节)"></a>2.3.3.4 Pulley Joint(滑轮关节)</h5><p>滑轮关节可以创造一个理想化的滑轮，将两个物体与地面连接/互相连接。一个物体上升时另一个下降，滑轮绳的长度在一开始就配置好了。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cpulley.png" srcset="/img/loading.gif" alt="image-20200710173334581"></p>
+<p><code>length1 + length2 = constant</code></p>
+<p>也可以通过加一个比率来模拟滑轮组（<strong>高中物理，出现力</strong>），这会导致一边的绳比另一边延展的快，约束力在一遍比另一边小，可以用来创造<strong>杠杆</strong>。</p>
+<p><code>length1 + ratio * length2 = constant</code></p>
+<p>例：ratio = 2时，length1的变化速度是length2的两倍，绳1的拉力是绳2的1/2。</p>
+<p>如果一边绳子拉没了，滑轮可能会出问题。最好防止一下。</p>
+<p>它的定义如下：</p>
+<pre><code class="hljs C++">b2Vec2 anchor1/<span class="hljs-number">2</span> = myBody1/<span class="hljs-number">2</span>-&gt;GetWorldCentor();
+b2Vec2 groundAnchor1/<span class="hljs-number">2</span>(x1/x2, y1/y2);
+float32 ratio = <span class="hljs-number">1.0f</span>;
+
+b2PulleyJointDef jointDef;
+jointDef.Initialize(myBody1, myBody2, groundAnchor1, groundAnchor2, anchor1, anchor2, ratio);</code></pre>
+
+<p>可以用<code>GetLengthA/B() const</code>获取当前的长度。</p>
+<h5 id="2-3-3-5-Gear-Joint（齿轮关节）"><a href="#2-3-3-5-Gear-Joint（齿轮关节）" class="headerlink" title="2.3.3.5 Gear Joint（齿轮关节）"></a>2.3.3.5 Gear Joint（齿轮关节）</h5><p>机械游戏当然需要齿轮啦！在LiquidFun里你可以使用复合形状来制作齿轮齿的模型，这有点慢且有点麻烦。你在排齿轮齿的时候也得小心，才能使得齿轮平滑地转动。</p>
+<p>用齿轮关节制作齿轮就比较简单了。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cgear.png" srcset="/img/loading.gif" alt="image-20200710174517774"></p>
+<p>齿轮关节只能连接旋转 and/or 平移关节。</p>
+<p>你可以定义一个齿轮ratio，可以是负数。还要注意：当一个是旋转一个是平移关节的时候，需要提供一个角度到长度（或者反过来）的单位转化。</p>
+<p><code>coordinate1 + ratio * coordinate2 == constant</code></p>
+<p>下面是一锅厘子：（bodyA/B是两个关节提供的任一个物体，不相同即可）：</p>
+<pre><code class="hljs C++">b2GearJointDef jointDef;
+jointDef.bodyA/B = myBodyA/B;
+jointDef.joint1/<span class="hljs-number">2</span> = myRevolute/PrismaticJoint;
+jointDef.ratio = <span class="hljs-number">2.0f</span> * b2_pi / myLength;</code></pre>
+
+<p>注意到齿轮是依赖于之前那两个关节的，因此：</p>
+<p><strong>总是先删除齿轮，再删除其依赖的关节/物体。否则出事。</strong></p>
+<h5 id="2-3-3-6-Mouse-Joint-鼠标关节"><a href="#2-3-3-6-Mouse-Joint-鼠标关节" class="headerlink" title="2.3.3.6  Mouse Joint(鼠标关节)"></a>2.3.3.6  Mouse Joint(鼠标关节)</h5>
             </article>
             <hr>
             <div>
