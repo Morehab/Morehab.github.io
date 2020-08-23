@@ -213,7 +213,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：9 days ago
+                  本文最后更新于：18 days ago
                 
               </p>
             
@@ -358,11 +358,11 @@ chain.CreateLoop(vs, <span class="hljs-number">4</span>);</code></pre>
 <p>/// A small length used as a collision and constraint tolerance. Usually it is<br>/// chosen to be numerically significant, but visually insignificant.<br>#define b2_linearSlop            0.005f</p>
 </blockquote>
 <p>在chain中的边都被视作child shape，可以通过指标访问。当chain shape与body连接时，每个边在broad-phase碰撞树中都会得到自己的bounding box。</p>
-<pre><code class="hljs reasonml"><span class="hljs-comment">// Visit each child edge.</span>
-for (<span class="hljs-built_in">int32</span> i = <span class="hljs-number">0</span>; i &lt; chain.<span class="hljs-constructor">GetChildCount()</span>; ++i)
+<pre><code class="hljs C++"><span class="hljs-comment">// Visit each child edge.</span>
+<span class="hljs-keyword">for</span> (int32 i = <span class="hljs-number">0</span>; i &lt; chain.GetChildCount(); ++i)
 &#123;
    b2EdgeShape edge;
-   chain.<span class="hljs-constructor">GetChildEdge(&amp;<span class="hljs-params">edge</span>, <span class="hljs-params">i</span>)</span>;
+   chain.GetChildEdge(&amp;edge, i);
    …
 &#125;</code></pre>
 
@@ -733,7 +733,7 @@ dynamicBody = <span class="hljs-literal">NULL</span>;</code></pre>
 <p><code>b2ContactListener::BeginContact and EndContact</code></p>
 <h3 id="2-3-Joints"><a href="#2-3-Joints" class="headerlink" title="2.3. Joints"></a>2.3. Joints</h3><p>Joints是用来约束bodies在世界中的状态/约束bodies之间的关系的，在游戏世界中比较典型的有Ragdolls(布娃娃)、teeter(跷跷板)、pulley(滑轮)。Joints可以以很多方式连接，形成有趣的动画。</p>
 <p>有些Joints提供limits，使得运动受限。</p>
-<p>有些Joints提供motos，可以控制joint运动的速度，直到施加的力/力矩超过预先设置的限度；可以控制位置（通过调整速度使其运动）；可以模拟joint friction：将joint的速度设为0，提供一个较小、但能起决定作用的力/力矩，则motor会试图阻止joint运动，直到负载过重。</p>
+<p>有些Joints提供motors，可以控制joint运动的速度，直到施加的力/力矩超过预先设置的限度；可以控制位置（通过调整速度使其运动）；可以模拟joint friction：将joint的速度设为0，提供一个较小、但能起决定作用的力/力矩，则motor会试图阻止joint运动，直到负载过重。</p>
 <h4 id="2-3-1-Joint的定义"><a href="#2-3-1-Joint的定义" class="headerlink" title="2.3.1  Joint的定义"></a>2.3.1  Joint的定义</h4><p><img src="C:%5CUsers%5Cybr19%5CDocuments%5C100%_MOREHAB%5CFiles%5CBLOGGER%5Csource%5Cimg%5Cblog%5Cjointdef.png" srcset="/img/loading.gif" alt="image-20200710154221125"></p>
 <ul>
 <li>Joint是通过b2JointDef这个类<strong>及其衍生</strong>（见上）定义的；</li>
@@ -935,7 +935,7 @@ MyActor* actorA = (MyActor*)bodyA-&gt;GetUserData();</code></pre>
 <p>在运行的时候，可以创造listener的一个对象，并且使用b2World::SetContactListener函数登记。确保在world对象的生命期内监视器都是可以访问的。</p>
 <p>（1）<strong>开始</strong>：当两个fixture重合的时候调用，sensor和non-sensor都会调用。这类事件只会在time step内部出现。</p>
 <p>（2）<strong>结束</strong>：当两个fixture停止重合的时候调用，sensor和non-sensor都会。如果一个body被摧毁的时候也会调用，所以可能在time step之外出现此类事件。</p>
-<p>（3）<strong>Pre-Solve</strong>：在碰撞检测结束之后、碰撞解决之前调用。这给了用户根据当前配置禁用contact的机会。例如：你可以使用这个callback实现一个一边倒的平台（？），并且调用b2Contact::SetEnabled(false)。每次在处理碰撞的时候contact都会被重新启用，所以每个time-step都要禁用contact。由于碰撞检测是连续的，pre-solve事件可能会在每个time step每个contact被触发多次。</p>
+<p>（3）<strong>Pre-Solve</strong>：在碰撞检测结束之后、碰撞解决之前调用。这给了用户根据当前配置禁用contact的机会。例如：你可以使用这个callback实现一个一边封闭的平台（如：只出不进），并且调用b2Contact::SetEnabled(false)。每次在处理碰撞的时候contact都会被重新启用，所以每个time-step都要禁用contact。由于碰撞检测是连续的，pre-solve事件可能会在每个time step每个contact被触发多次。</p>
 <pre><code class="hljs C++"><span class="hljs-comment">//一段不太明白的代码</span>
 <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contact* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span></span>
 <span class="hljs-function"></span>&#123;
@@ -950,8 +950,8 @@ MyActor* actorA = (MyActor*)bodyA-&gt;GetUserData();</code></pre>
     &#125;
 &#125;</code></pre>
 
-<p>pre-solve事件也可以用来决定poitn state还有碰撞的来袭速度：</p>
-<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contac* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span></span>
+<p>pre-solve事件也可以用来决定point state还有碰撞的来袭速度：</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PreSolve</span><span class="hljs-params">(b2Contact* contact, <span class="hljs-keyword">const</span> b2Manifold* oldManifold)</span></span>
 <span class="hljs-function"></span>&#123;
     b2WorldManifold worldManifold;
     contact-&gt;GetWorldManifold(&amp;worldManifold);
