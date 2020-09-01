@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.jpg">
+  <link rel="icon" type="image/png" href="/img/icon.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>OOP复习笔记-Part II - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Morehab's Space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bg/post.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.15)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-08-23 21:15">
+      August 23, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：4 days ago
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="Chapter-4-组合、继承和模板"><a href="#Chapter-4-组合、继承和模板" class="headerlink" title="Chapter 4: 组合、继承和模板"></a>Chapter 4: 组合、继承和模板</h1><h2 id="4-1-组合"><a href="#4-1-组合" class="headerlink" title="4.1  组合"></a>4.1  组合</h2><p>语义角度：</p>
+<p><strong>Aggregation</strong>: 子对象可以在没有父对象存在时存在。（车和轮子）</p>
+<p><strong>composition</strong>: otherwise。（书和书页）</p>
+<h3 id="4-1-1-初始化"><a href="#4-1-1-初始化" class="headerlink" title="4.1.1  初始化"></a>4.1.1  初始化</h3><p><strong>Note</strong>：</p>
+<p>（1）const, 引用和成员对象都是在初始化列表里面初始化的。</p>
+<p>（2）构造顺序与<strong>定义顺序</strong>相同，析构顺序倒过来。</p>
+<h2 id="4-2-继承"><a href="#4-2-继承" class="headerlink" title="4.2  继承"></a>4.2  继承</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827155854867.png" srcset="/img/loading.gif" alt="image-20200827155854867"></p>
+<h3 id="4-2-1-初始化"><a href="#4-2-1-初始化" class="headerlink" title="4.2.1  初始化"></a>4.2.1  初始化</h3><p>顺序：基类ctor -&gt; 派生类ctor，析构反过来。</p>
+<p>可以通过using关键字继承基类的构造函数。（<em>Beginning C++17, P528</em>）</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827160939643.png" srcset="/img/loading.gif" alt="image-20200827160939643"></p>
+<p><strong>Note</strong>：ctor, dtor, “=”都默认不继承，不定义的话会自动合成。</p>
+<h3 id="4-2-3-final-amp-override"><a href="#4-2-3-final-amp-override" class="headerlink" title="4.2.3  final &amp; override"></a>4.2.3  final &amp; override</h3><p><strong>final</strong>：禁用一个类的继承/一个成员函数的复写。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-title">final</span> &#123;</span>&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span>&#123;</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> <span class="hljs-keyword">final</span> </span>&#123;&#125;  
+&#125;;</code></pre>
+
+<p><strong>override</strong>：确保是要override基类里面的虚函数。</p>
+<h3 id="4-2-4-权限"><a href="#4-2-4-权限" class="headerlink" title="4.2.4  权限"></a>4.2.4  权限</h3><p>（1）private继承时通过using把基类中的public成员重新设置为public。</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">public</span>:
+	<span class="hljs-keyword">using</span> Pet::eat;</code></pre>
+
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827162052342.png" srcset="/img/loading.gif" alt="image-20200827162052342"></p>
+<p>（2）默认继承方式是private。</p>
+<h3 id="4-2-5-重名问题"><a href="#4-2-5-重名问题" class="headerlink" title="4.2.5  重名问题"></a>4.2.5  重名问题</h3><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span>&#123;</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">getDensity</span><span class="hljs-params">()</span></span>;  
+&#125;;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span>&#123;</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">getDensity</span><span class="hljs-params">()</span></span>;  
+&#125;;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span>:</span> <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B&#123; &#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    C obj;
+    obj.getDensity(); <span class="hljs-comment">//WRONG!</span>
+    
+    obj.A::getDensity(); <span class="hljs-comment">//RIGHT!</span>
+    <span class="hljs-keyword">static_cast</span>&lt;A&amp;&gt;(obj).getDensity();
+&#125;</code></pre>
+
+
+
+<h3 id="4-2-6-虚基类"><a href="#4-2-6-虚基类" class="headerlink" title="4.2.6  虚基类"></a>4.2.6  虚基类</h3><p>为了解决以下问题：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827162832667.png" srcset="/img/loading.gif" alt="image-20200827162832667"></p>
+<p>（CerealPack将有两份Common的拷贝）使用<strong>virtual</strong>即可避免。</p>
+<h3 id="4-2-7-Name-Hiding"><a href="#4-2-7-Name-Hiding" class="headerlink" title="4.2.7  Name Hiding"></a>4.2.7  Name Hiding</h3><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pet</span>&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sleep</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sleep</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cat</span>&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sleep</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a)</span></span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+    Cat cat;
+    cat.sleep();  <span class="hljs-comment">//ERROR!sleep()(const/non-const) is hidden</span>
+&#125;</code></pre>
+
+<p>解决方法：转发/using。</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">using</span> Pet::sleep;  <span class="hljs-comment">//多个重名的被同时publicize，想隐藏一部分可以再声明为private</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sleep</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> Pet::sleep();
+&#125;</code></pre>
+
+
+
+<h3 id="4-2-8-Upcasting"><a href="#4-2-8-Upcasting" class="headerlink" title="4.2.8  Upcasting"></a>4.2.8  Upcasting</h3><p>将派生类的引用/指针转换为基类的引用/指针。<strong>只在public继承的条件下有效。</strong></p>
+<h3 id="4-2-9-Copy-Ctor-amp-Move-Ctor"><a href="#4-2-9-Copy-Ctor-amp-Move-Ctor" class="headerlink" title="4.2.9  Copy Ctor &amp; Move Ctor"></a>4.2.9  Copy Ctor &amp; Move Ctor</h3><p>在继承和复合中会自动生成，调用子对象和基类的copy ctor。</p>
+<p>利用<strong>upcasting</strong>，可以这样写：</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span> :</span> <span class="hljs-keyword">public</span> B
+&#123;
+  A a;
+  C(<span class="hljs-keyword">const</span> C&amp; c) : B&#123;c&#125;, a&#123;c.a&#125; &#123;&#125;
+  C(C &amp;&amp;c) : B&#123;<span class="hljs-built_in">move</span>(c)&#125;, a&#123;<span class="hljs-built_in">move</span>(c.a)&#125;
+&#125;;</code></pre>
+
+<p>执行顺序：先继承后复合。</p>
+<h3 id="4-2-10-对象切片"><a href="#4-2-10-对象切片" class="headerlink" title="4.2.10  对象切片"></a>4.2.10  对象切片</h3><p>如果直接将派生类对象cast为基类对象（不是指针不是引用），派生类对象被切片，数据丢失。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827170140789.png" srcset="/img/loading.gif" alt="image-20200827170140789"></p>
+<h3 id="4-2-11-多态"><a href="#4-2-11-多态" class="headerlink" title="4.2.11  多态"></a>4.2.11  多态</h3><p><strong>Note 1</strong> : <strong>virtual</strong>关键字只需要在声明时出现。</p>
+<p><strong>Note 2</strong>：基类virtual派生类全virtual。</p>
+<p><strong>Note 3</strong>：如果基类虚函数有缺省参数，而且你通过指针/引用调用该函数，得到的缺省值是基类中的。</p>
+<h3 id="4-2-12-关键字typeid"><a href="#4-2-12-关键字typeid" class="headerlink" title="4.2.12  关键字typeid"></a>4.2.12  关键字typeid</h3><p><strong>头文件</strong>：<typeinfo>，与编译器相关。得到对象/类型的<strong>动态类型</strong>。</p>
+<pre><code class="hljs C++"><span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-keyword">typeid</span>(<span class="hljs-keyword">double</span>).name() &lt;&lt; <span class="hljs-built_in">endl</span>;  <span class="hljs-comment">//"double"</span>
+
+Derived obj; Base&amp; ref = obj;
+<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-keyword">typeid</span>(ref).name() &lt;&lt; <span class="hljs-built_in">endl</span>;  <span class="hljs-comment">//"Derived"</span></code></pre>
+
+
+
+<h3 id="4-2-13-static-cast-again-amp-dynamic-cast"><a href="#4-2-13-static-cast-again-amp-dynamic-cast" class="headerlink" title="4.2.13  static_cast(again) &amp; dynamic_cast"></a>4.2.13  static_cast(again) &amp; dynamic_cast</h3><p>static_cast：</p>
+<ul>
+<li>是静态检查的，也就是说是在编译过程中检查。</li>
+<li>也可以将基类转回派生类，但不安全！</li>
+<li>C-style cast: (int)a 不安全！</li>
+</ul>
+<p>dynamic_cast：</p>
+<ul>
+<li>只能用在多态类型上（有至少一个虚函数）。</li>
+<li>比static_cast安全（在运行时才进行转换，对指针转换不成功返回nullptr，对引用转换不成功停止程序、抛出异常）</li>
+<li>可以进行crosscast：</li>
+</ul>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827172154206.png" srcset="/img/loading.gif" alt="image-20200827172154206"></p>
+<h3 id="4-2-14-VTABLE-amp-VPTR"><a href="#4-2-14-VTABLE-amp-VPTR" class="headerlink" title="4.2.14  VTABLE &amp; VPTR"></a>4.2.14  VTABLE &amp; VPTR</h3><p>VTABLE：在编译期建立；</p>
+<p>VPTR：在运行期建立。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827172439702.png" srcset="/img/loading.gif" alt="image-20200827172439702"></p>
+<h3 id="4-2-14-抽象类"><a href="#4-2-14-抽象类" class="headerlink" title="4.2.14  抽象类"></a>4.2.14  抽象类</h3><p>有纯虚函数，不能定义对象。（所以不会发生切片）全部override了才能定义对象。</p>
+<p>纯虚函数可以有界面（就算有界面也得override了）：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200827172830303.png" srcset="/img/loading.gif" alt="image-20200827172830303"></p>
+<h3 id="4-2-15-Virtual与ctor-dtor的关系"><a href="#4-2-15-Virtual与ctor-dtor的关系" class="headerlink" title="4.2.15  Virtual与ctor, dtor的关系"></a>4.2.15  Virtual与ctor, dtor的关系</h3><ul>
+<li>ctor/dtor中调用虚函数，多态故障，会调用当前类的成员函数。（在其它成员函数中调用可行）</li>
+<li>ctor不可以是virtual的（因为VPTR都还没有）</li>
+</ul>
+<ul>
+<li>dtor可以是纯虚的，但需要定义函数体。</li>
+<li>dtor一般都是虚的。（有别的虚函数就应当是虚的）</li>
+</ul>
+<p><strong>NOTE</strong>：多态需要额外开销。</p>
+<h1 id="Chapter-5：设计模式"><a href="#Chapter-5：设计模式" class="headerlink" title="Chapter 5：设计模式"></a>Chapter 5：设计模式</h1><h2 id="5-0-OOP-Principle"><a href="#5-0-OOP-Principle" class="headerlink" title="5.0  OOP Principle"></a>5.0  OOP Principle</h2><ul>
+<li>针对接口编程。</li>
+<li>open-closed principle：对扩展开放，对修改封闭（增量开发原则）</li>
+<li>single responsibility：分割任务，交给不同的对象。</li>
+</ul>
+<h2 id="5-1-Singleton-creational"><a href="#5-1-Singleton-creational" class="headerlink" title="5.1  Singleton(creational)"></a>5.1  Singleton(creational)</h2><p><strong>Dynamic Singleton</strong>：</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">static</span> Singleton* <span class="hljs-title">Instance</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (instance_ == <span class="hljs-literal">nullptr</span>) &#123;
+            instance_ = <span class="hljs-keyword">new</span> Singleton();
+        &#125;
+        <span class="hljs-keyword">return</span> instance_;
+    &#125;
+<span class="hljs-keyword">private</span>:
+    Singleton() &#123;&#125;
+    Singleton(<span class="hljs-keyword">const</span> Singleton&amp;);
+    Singleton&amp; <span class="hljs-keyword">operator</span> = (<span class="hljs-keyword">const</span> Singleton&amp;);
+    ~Singleton();  <span class="hljs-comment">//禁止通过这里释放</span>
+    <span class="hljs-keyword">static</span> Singleton* instance_;
+&#125;</code></pre>
+
+<h2 id="5-2-Adapter-structural"><a href="#5-2-Adapter-structural" class="headerlink" title="5.2  Adapter(structural)"></a>5.2  Adapter(structural)</h2><p>使用已有的类完成新类的书写。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStack</span>&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>&#123;
+        m_data.push_back(i);
+    &#125;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; m_data;
+&#125;;</code></pre>
+
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828090159188.png" srcset="/img/loading.gif" alt="image-20200828090159188"></p>
+<p><strong>class adapter</strong>：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828090435000.png" srcset="/img/loading.gif" alt="image-20200828090435000"></p>
+<p>private继承而非复合。</p>
+<h2 id="5-3-Simple-Factory"><a href="#5-3-Simple-Factory" class="headerlink" title="5.3  Simple Factory"></a>5.3  Simple Factory</h2><p>把会改变的和不会改变的分开。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828090859293.png" srcset="/img/loading.gif" alt="image-20200828090859293"></p>
+<p>（1）一个产品类，有很多派生类。</p>
+<p>（2）一个工厂类，制造这些产品。</p>
+<p>（3）一个商店类，与实例化解耦。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828091530112.png" srcset="/img/loading.gif" alt="image-20200828091530112"></p>
+<p><strong>不满足open-closed principle</strong>。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828091726959.png" srcset="/img/loading.gif" alt="image-20200828091726959"></p>
+<h2 id="5-4-Factory-Method-creational"><a href="#5-4-Factory-Method-creational" class="headerlink" title="5.4  Factory Method(creational)"></a>5.4  Factory Method(creational)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828091925467.png" srcset="/img/loading.gif" alt="image-20200828091925467"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828092150998.png" srcset="/img/loading.gif" alt="image-20200828092150998"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828092221222.png" srcset="/img/loading.gif" alt="image-20200828092221222"></p>
+<p>可以使用参数化：原有代码使用simple factory，新种类使用factory method。</p>
+<h2 id="5-5-Absstract-Factory-creational"><a href="#5-5-Absstract-Factory-creational" class="headerlink" title="5.5  Absstract Factory(creational)"></a>5.5  Absstract Factory(creational)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828093018191.png" srcset="/img/loading.gif" alt="image-20200828093018191"></p>
+<h2 id="5-6-Observer-creational"><a href="#5-6-Observer-creational" class="headerlink" title="5.6  Observer(creational)"></a>5.6  Observer(creational)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828093437987.png" srcset="/img/loading.gif" alt="image-20200828093437987"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828094035073.png" srcset="/img/loading.gif" alt="image-20200828094035073"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828094207286.png" srcset="/img/loading.gif" alt="image-20200828094207286"></p>
+<h2 id="5-7-Strategy-behavioral"><a href="#5-7-Strategy-behavioral" class="headerlink" title="5.7  Strategy(behavioral)"></a>5.7  Strategy(behavioral)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828100704597.png" srcset="/img/loading.gif" alt="image-20200828100704597"></p>
+<h2 id="5-8-Template-Method-behavioral"><a href="#5-8-Template-Method-behavioral" class="headerlink" title="5.8  Template Method(behavioral)"></a>5.8  Template Method(behavioral)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828103425435.png" srcset="/img/loading.gif" alt="image-20200828103425435"></p>
+<p>以上两种方式的结合：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828103730633.png" srcset="/img/loading.gif" alt="image-20200828103730633"></p>
+<h2 id="5-9-Proxy（structural）"><a href="#5-9-Proxy（structural）" class="headerlink" title="5.9  Proxy（structural）"></a>5.9  Proxy（structural）</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828104223431.png" srcset="/img/loading.gif" alt="image-20200828104223431"></p>
+<h2 id="5-10-Command-State-behavioral"><a href="#5-10-Command-State-behavioral" class="headerlink" title="5.10  Command State(behavioral)"></a>5.10  Command State(behavioral)</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828105105822.png" srcset="/img/loading.gif" alt="image-20200828105105822"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828105208408.png" srcset="/img/loading.gif" alt="image-20200828105208408"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828105314634.png" srcset="/img/loading.gif" alt="image-20200828105314634"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828105404982.png" srcset="/img/loading.gif" alt="image-20200828105404982"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828110043226.png" srcset="/img/loading.gif" alt="image-20200828110043226"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828110239072.png" srcset="/img/loading.gif" alt="image-20200828110239072"></p>
+<p>State Pattern与其类似。</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828110336489.png" srcset="/img/loading.gif" alt="image-20200828110336489"></p>
+<h1 id="Chapter-6：其它"><a href="#Chapter-6：其它" class="headerlink" title="Chapter 6：其它"></a>Chapter 6：其它</h1><h2 id="6-1-运算符重载"><a href="#6-1-运算符重载" class="headerlink" title="6.1  运算符重载"></a>6.1  运算符重载</h2><p><strong>方法一</strong>：成员函数</p>
+<p><code>x @ y;</code>  相当于 <code>x.operator @ (y);</code></p>
+<p><code>@ x;</code>  相当于  <code>x.operator @();</code>，也即<code>const TYPE&amp; operator ++()</code>。</p>
+<p><code>x @;</code>  相当于 <code>x.operator @(0);</code> ，也即<code>const TYPE&amp; operator ++(int)</code>。</p>
+<p><strong>方法二</strong>：友元函数</p>
+<p>限制：用法不能变，不能定义新的运算符，不能改变运算符优先级，不能改变运算元个数，有些运算符不能重载（&lt;.&gt;, &lt;.*&gt;, &lt;::&gt;, &lt;?&gt;）</p>
+<p><strong>friend</strong>关键字是为了访问类内的私有成员，如果不需要的话不一定需要加。</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">friend</span> <span class="hljs-keyword">const</span> Integer&amp; <span class="hljs-keyword">operator</span>++(Integer&amp; a);
+<span class="hljs-keyword">friend</span> <span class="hljs-keyword">const</span> Integer <span class="hljs-keyword">operator</span>++(Integer&amp; a, <span class="hljs-keyword">int</span>);</code></pre>
+
+<p>当左操作数不是自定义类型时，只能作为<strong>友元函数</strong>重载。</p>
+<h2 id="6-2-流运算符"><a href="#6-2-流运算符" class="headerlink" title="6.2  流运算符"></a>6.2  流运算符</h2><pre><code class="hljs C++"><span class="hljs-built_in">cin</span> is istream, <span class="hljs-built_in">cout</span> is ostream
+<span class="hljs-keyword">friend</span> ostream&amp; <span class="hljs-keyword">operator</span> &lt;&lt; (ostream &amp;output, <span class="hljs-keyword">const</span> Point&amp; <span class="hljs-built_in">point</span>) &#123;
+    <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> output &lt;&lt;</span>
+    <span class="hljs-keyword">return</span> output;
+&#125;</code></pre>
+
+<h2 id="6-2-“-”"><a href="#6-2-“-”" class="headerlink" title="6.2  “=”"></a>6.2  “=”</h2><p>有指针时自己定义。</p>
+<pre><code class="hljs C++">TYPE&amp; <span class="hljs-keyword">operator</span> = (<span class="hljs-keyword">const</span> TYPE&amp; src)
+&#123;
+    <span class="hljs-keyword">if</span> (&amp;src != <span class="hljs-keyword">this</span>)&#123;  <span class="hljs-comment">//avoid self assignment</span>
+        <span class="hljs-comment">//assignment</span>
+    &#125;
+    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;
+&#125;</code></pre>
+
+<p>注意：</p>
+<p>（1）返回引用；</p>
+<p>（2）全部赋值，而不是传递指针。</p>
+<h2 id="6-3-Move-Assignment"><a href="#6-3-Move-Assignment" class="headerlink" title="6.3  Move Assignment"></a>6.3  Move Assignment</h2><p>相当于 bitcopy + 原来的置空。</p>
+<h2 id="6-4-函数调用运算符“（）”"><a href="#6-4-函数调用运算符“（）”" class="headerlink" title="6.4  函数调用运算符“（）”"></a>6.4  函数调用运算符“（）”</h2><p><strong>函数对象</strong>：一个特殊类的对象，这个特殊类带有重载过的函数调用运算符（<strong>一定以成员函数的方式重载</strong>）。在STL中常常使用。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FuncObj_Type</span>&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function">Return_Type <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(ParameterList)</span></span>;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">F</span>&#123;</span>
+    <span class="hljs-keyword">int</span> data;
+<span class="hljs-keyword">public</span>:
+    F(<span class="hljs-keyword">int</span> val) : data&#123;val&#125; &#123;&#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> (x &gt; data);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+    F f&#123;<span class="hljs-number">30</span>&#125;;
+    <span class="hljs-keyword">bool</span> res = f(<span class="hljs-number">43</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+
+<p><strong>在STL排序中</strong>：</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">myfunction</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span> </span>&#123; <span class="hljs-keyword">return</span> (i&gt;j);&#125;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">myclass</span> &#123;</span>
+	<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span> </span>&#123; <span class="hljs-keyword">return</span> (i&gt;j); &#125;
+&#125; myobject;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+	<span class="hljs-keyword">int</span> myints[] = &#123;<span class="hljs-number">32</span>,<span class="hljs-number">71</span>,<span class="hljs-number">12</span>,<span class="hljs-number">45</span>,<span class="hljs-number">26</span>,<span class="hljs-number">80</span>,<span class="hljs-number">53</span>,<span class="hljs-number">33</span>&#125;;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">myvector</span> <span class="hljs-params">(myints, myints+<span class="hljs-number">8</span>)</span></span>;
+	<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;::iterator it;
+    
+    <span class="hljs-comment">//使用 &lt; 排序</span>
+    sort (myvector.<span class="hljs-built_in">begin</span>(), myvector.<span class="hljs-built_in">end</span>()+<span class="hljs-number">4</span>);
+    
+    <span class="hljs-comment">//使用 comp</span>
+    sort (myvector.<span class="hljs-built_in">begin</span>(), myvector.<span class="hljs-built_in">end</span>(), myfunction);
+    
+    <span class="hljs-comment">//使用函数对象</span>
+    sort (myvector.<span class="hljs-built_in">begin</span>(), myvector.<span class="hljs-built_in">end</span>(), myobject);
+    sort (myvector.<span class="hljs-built_in">begin</span>(), myvector.<span class="hljs-built_in">end</span>(), greater&lt;<span class="hljs-keyword">int</span>&gt;() );
+&#125;</code></pre>
+
+<p><strong>在map类中</strong>：</p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828115315942.png" srcset="/img/loading.gif" alt="image-20200828115315942"></p>
+<p>可以定义一个比较类后，用比较类定义一个自动排序的map：</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">PntCmp</span>&#123;</span>
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">operator</span> <span class="hljs-params">()</span> <span class="hljs-params">(cosnt Point&amp; pnt1, <span class="hljs-keyword">const</span> Point&amp; pnt2)</span> </span>&#123;&#125;
+&#125;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-built_in">map</span>&lt;Point, <span class="hljs-built_in">string</span>, PntComp&gt; PntSMap;</code></pre>
+
+<p>注意：当map.find()未找到时，空元素会被添加进去。</p>
+<p>注意：重载比较运算符时最好重载3个：&lt; , &gt;, ==。</p>
+<p><strong>可以将函数对象作为参数，传到函数中。函数对象可以包含一些有用的成员函数。</strong></p>
+<h2 id="6-5-模板"><a href="#6-5-模板" class="headerlink" title="6.5  模板"></a>6.5  模板</h2><p><strong>应当在头文件中定义。</strong></p>
+<pre><code class="hljs C++"><span class="hljs-comment">// 函数模板：编译期间实例化</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T1</span>, <span class="hljs-title">class</span> <span class="hljs-title">T2</span>, ...&gt;  //<span class="hljs-title">class</span> / <span class="hljs-title">typename</span>,</span>
+<span class="hljs-class">    								//类型标识符（<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>）不能重复，</span>
+<span class="hljs-class">    								//且每个类型标识符都应当在函数参数列表中出现</span>
+<span class="hljs-class"><span class="hljs-title">ReturnType</span> <span class="hljs-title">FunctionName</span>(<span class="hljs-title">ParameterList</span>) &#123;</span>
+    <span class="hljs-comment">// Function Body</span>
+&#125;
+
+<span class="hljs-comment">// 特化：specialization</span>
+<span class="hljs-keyword">template</span> &lt;&gt;
+<span class="hljs-keyword">void</span> sort&lt;<span class="hljs-keyword">char</span>*&gt;(<span class="hljs-keyword">char</span>** L, <span class="hljs-keyword">int</span> length) &#123;&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    sort&lt;<span class="hljs-keyword">int</span>&gt;(arr, <span class="hljs-number">8</span>);
+    sort(arr, <span class="hljs-number">8</span>);  <span class="hljs-comment">//implicit</span>
+&#125;</code></pre>
+
+<pre><code class="hljs C++"><span class="hljs-comment">// 类模板</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span> = <span class="hljs-title">int</span>, <span class="hljs-title">int</span> <span class="hljs-title">max</span> = 10&gt;   	//<span class="hljs-title">int</span>/<span class="hljs-title">uint</span>/<span class="hljs-title">long</span>等可以转换为<span class="hljs-title">int</span>的作为参数</span>
+<span class="hljs-class">    						 				//在编译期间被实例化为常数，可以有缺省值</span>
+<span class="hljs-class"><span class="hljs-title">class</span> <span class="hljs-title">Stack</span>&#123;</span>
+    T arr[];
+&#125;
+
+<span class="hljs-comment">// 类模板可以继承 普通类 / 实例化的模板类</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
+<span class="hljs-class"><span class="hljs-title">class</span> <span class="hljs-title">Sortable_list</span> :</span> <span class="hljs-keyword">public</span> Stack&lt;T&gt; &#123;
+    
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    Stack&lt;<span class="hljs-keyword">int</span>&gt; intStack;
+&#125;</code></pre>
+
+<p><strong>NOTE</strong>：</p>
+<p>（1）因为模板实例化会复制代码，所以对于不需要类参数的代码部分应当做成基类。</p>
+<p>（2）泛型编程（<em>generic programming</em>）：与数据类型无关的编程。</p>
+<p>（3）元编程（<em>meta programming</em>）：编译期间计算。</p>
+<p>（4）可以在函数对象中使用模板：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
+<span class="hljs-class"><span class="hljs-title">class</span> <span class="hljs-title">IsPass</span> &#123;</span>
+    T _p;
+<span class="hljs-keyword">public</span>:
+    IsPass(T p) : _p&#123;p&#125; &#123;&#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(T&amp; s)</span> </span>&#123; <span class="hljs-keyword">return</span> s &gt;= _p; &#125;
+&#125;</code></pre>
+
+<p><strong>谓词</strong>：函数对象/指针/lambda表达式，返回true/false。</p>
+<h2 id="6-6-迭代器模式"><a href="#6-6-迭代器模式" class="headerlink" title="6.6  迭代器模式"></a>6.6  迭代器模式</h2><blockquote>
+<p> 模板    ：解耦 算法 和 数据类型；</p>
+</blockquote>
+<blockquote>
+<p> 迭代器：解耦 算法 和 数据结构类型；</p>
+</blockquote>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828131704156.png" srcset="/img/loading.gif" alt="image-20200828131704156"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828131718351.png" srcset="/img/loading.gif" alt="image-20200828131718351"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828132055991.png" srcset="/img/loading.gif" alt="image-20200828132055991"></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828132627152.png" srcset="/img/loading.gif" alt="image-20200828132627152"></p>
+<h2 id="6-7-一些有用的STL"><a href="#6-7-一些有用的STL" class="headerlink" title="6.7  一些有用的STL"></a>6.7  一些有用的STL</h2><p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200828133622250.png" srcset="/img/loading.gif" alt="image-20200828133622250"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Coding/">Coding</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Coding/">Coding</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Notes/">Notes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/23/OOP%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OOP复习笔记-Part I</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/23/Diary-2020-08/">
+                        <span class="hidden-mobile">Diary: 2020/08</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoadAp = window.onload;
+  window.onload = function () {
+    oldLoadAp && oldLoadAp();
+
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'true' === 'true',
+      loop: 'all',
+      order: 'list',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"Song_On_The_Beach","artist":"Arcade_Fire","url":"/songs/Arcade_Fire-Song_On_The_Beach.mp3","cover":"/img/Song_On_The_Beach.jpg"}]
+    });
+  }
+</script>
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer>
+  (function () {
+    // 查询存储的记录
+    function getRecord(Counter, target) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {target, time: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    }
+
+    // 发起自增请求
+    function increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    }
+
+    // 构建自增请求体
+    function buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "time": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    }
+
+    // 校验是否为有效的 UV
+    function validUV() {
+      var key = 'LeanCloud_UV_Flag';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    }
+
+    function addCount(Counter) {
+      var enableIncr = 'true' === 'true' && window.location.hostname !== 'localhost';
+      var getterArr = [];
+      var incrArr = [];
+
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#leancloud-site-pv-container');
+      if (pvCtn || enableIncr) {
+        var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+          incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-pv');
+          if (ele) {
+            ele.innerText = record.time + 1;
+            if (pvCtn) {
+              pvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#leancloud-site-uv-container');
+      if (uvCtn || enableIncr) {
+        var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+          var vuv = validUV();
+          vuv && incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-uv');
+          if (ele) {
+            ele.innerText = record.time + (vuv ? 1 : 0);
+            if (uvCtn) {
+              uvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 如果是文章，请求文章的浏览数，并自增
+      if ('true' === 'true') {
+        var viewCtn = document.querySelector('#leancloud-post-views-container');
+        if (viewCtn || enableIncr) {
+          var target = decodeURI('/2020/08/23/OOP%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-Part-II/');
+          var viewGetter = getRecord(Counter, target).then((record) => {
+            incrArr.push(buildIncrement(record.objectId))
+            if (viewCtn) {
+              var ele = document.querySelector('#leancloud-post-views');
+              if (ele) {
+                ele.innerText = (record.time || 0) + 1;
+                viewCtn.style.display = 'inline';
+              }
+            }
+          });
+          getterArr.push(viewGetter);
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && increment(Counter, incrArr);
+        })
+      }
+    }
+
+    var app_id = 'yzJgerhadrHUF0U5I8IPKjIS-gzGzoHsz'
+    var app_key = 'qQ0YN6yVdlMnmaxqWDCvTc7X'
+    var server_url = 'https://yzjgerha.lc-cn-n1-shared.com'
+
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': app_id,
+            'X-LC-Key': app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+
+      addCount(Counter);
+    }
+
+    var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(resp => resp.json())
+        .then(({api_server}) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "OOP复习笔记-Part II&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>
