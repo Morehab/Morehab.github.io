@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>遗书：2020/10/9 - Hexo</title>
+  <title>数据结构复习笔记 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-10-09 18:56">
-      October 9, 2020 pm
+    <time datetime="2021-01-03 11:21">
+      January 3, 2021 am
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      216 字
+      1.7k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      21
        分钟
     </span>
   
@@ -213,19 +213,199 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：3 months ago
+                  本文最后更新于：6 minutes ago
                 
               </p>
             
             <article class="markdown-body">
-              <p>&nbsp;</p>
-<blockquote>
-<p>天桥的护栏太高，安定据说得吃几百片（也不知道得开几年才能攒够），慢性毒药也不知道该买什么。</p>
-<p>所以还是算了，今天最终还是打算活下去。写封遗书，就当作自己已经死过一次了。</p>
+              <h1 id="Part-I-：课件"><a href="#Part-I-：课件" class="headerlink" title="Part I ：课件"></a>Part I ：课件</h1><h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><blockquote>
+<p>数据结构的应用：</p>
+<p>Web搜索系统：网页抓取，网页信息提取，建立倒排文档，查询输入，网页查找，网页输出</p>
+<p>其中，网页信息提取需要用到<strong>串</strong>和<strong>树形结构</strong>。</p>
+<p>倒排文档需要用到数组、链表、查找表、排序。</p>
 </blockquote>
-<p>也不是第一次写遗书了。一次比一次写得短，一次没一次矫情——想来就应该是这样的，死亡本来就是油尽灯枯的事。</p>
-<p>关于现实的这十几年生活我实在是没什么可说。就说说下辈子吧。下辈子我想做同仁堂金碧辉煌的门牌，或者是幸福家庭里小男孩的发旋；如果非要做人的话，想做一个快乐的俗人。</p>
-<p>对不起妈妈，对不起所有在乎过我的人。你们都要开心。</p>
+<p><strong>数据</strong>：对信息的一种<strong>符号</strong>表示，指所有能输入到计算机中进行程序处理的符号的总称。</p>
+<ul>
+<li><p>例：如整型、实型等数据类型，声音、图像、视频等符号类型。</p>
+</li>
+<li><p>以<strong>数据元素（记录）</strong>为基本单位：数据元素通常作为整体处理。</p>
+<ul>
+<li><p>由若干<strong>数据项</strong>组成。数据项是组成数据元素的具有独立含义的最小单位。</p>
+</li>
+<li><p>如“人与各器官”就是数据元素与数据项的关系。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>数据结构</strong>：相互之间存在<strong>一种或多种特定关系</strong>的<strong>数据元素</strong>的集合</p>
+<ul>
+<li><p>描述的是按照一定逻辑关系组织起来的待处理数据元素的<strong>表示</strong>及相关操作；</p>
+</li>
+<li><p>包含以下<strong>三元素</strong>：（D=数据元素的有限集合（数据对象），R=D上关系的有限集合，P=对D的基本操作的集合）</p>
+<ul>
+<li><p>逻辑结构：数据元素间的逻辑关系；Data_structure = (D,R)。</p>
+</li>
+<li><p>存储表示（存储结构/物理结构）：数据元素及其关系在计算机存储内的表示（存储映像）；反映数据元素本身及其之间的关系。</p>
+<p>一般为顺序存储结构/链式存储结构；还有索引存储（建立索引表）和散列存储（关键码-&gt;存储地址）。</p>
+</li>
+<li><p>数据的运算：对数据施加的操作；定义在数据结构之上的对数据操作的总称。</p>
+<p>包括建立、清除（置空）、求长、判空、判满、获取、更新/修改、插入、删除、查找、遍历。</p>
+</li>
+</ul>
+</li>
+<li><p>分为四种：集合结构、线性结构、树形结构、图形结构。</p>
+</li>
+<li><p>表现形式：</p>
+<ul>
+<li>逻辑抽象模型 → 抽象数据类型（ADT）（如链表）=（D,R,P）。</li>
+<li>具体实现：C/C++，Java</li>
+</ul>
+</li>
+</ul>
+<p><strong>数据类型</strong>：一组性质相同的值的集合，以及定义于这个值集合上的一组操作的总称。</p>
+<ul>
+<li>程序数据语言中，变量数据类型规定了其<strong>取值范围</strong>和<strong>可用操作</strong>。</li>
+<li>看作程序设计语言中<strong>已实现</strong>的数据结构。</li>
+<li>抽象数据类型：抽取问题本质，解决同类问题；层次化设计，统一接口，内部实现与外部特性分离。</li>
+</ul>
+<p><strong>算法</strong>：解决方法的准确而完整的描述，一系列解决问题的清晰指令；定义了输入实例上的操作。</p>
+<ul>
+<li><p>描述方法：自然语言，图形（N-S(方块)，流程），算法，形式语言（数学）。</p>
+</li>
+<li><p>设计目标：正确性、可读性、健壮性、高效性。</p>
+</li>
+<li><p>特性：有穷性（有穷步骤，每步有穷时间）；确定性（每步含义确切）；可行性（语句可行，总体解决问题可行）；输入零个或多个；输出零个或多个（与输入有特定关系）。</p>
+</li>
+<li><p>效率：</p>
+<ul>
+<li><p>时间复杂度：</p>
+<ul>
+<li><p>评价方法包括：实验性测试（需实现算法，只能测试有限输入，依赖硬件和软件环境）、综合分析（调用实例图/递推方程）</p>
+</li>
+<li><p>最坏情况（最常使用，为上界，常发生）；平均（计算困难，通常与最坏处于同一水平）；最优</p>
+</li>
+<li><p><strong>渐近分析</strong>：忽略常数和低次项，考虑<strong>规模足够大的情况</strong>。</p>
+<ul>
+<li><p>O：大O记号，<strong>最坏情况</strong>，渐近上界，$$f,g定义在非负整数上,f(n)=O(g(n))，如果\exist 常数c以及n_0,满足对\forall n \geq n_0,有f(n) \leq cg(n)$$。</p>
+<p>$$O(1) &lt; logn &lt; \sqrt{n} &lt; n &lt; nlogn &lt; n^2 &lt; n^3 &lt; 2^n &lt; n!$$</p>
+<p>多项式复杂度：$$O(n^k),k\geq 1$$；指数复杂度：$$O(a^n), a&gt; 1$$。</p>
+</li>
+<li><p>$$\Omega(f(n))$$：Big Omega，<strong>最优情况</strong>，渐近下界，$$f,g定义在非负整数上,f(n)=\Omega(g(n))，如果\exist 常数c以及n_0,满足对\forall n \geq n_0,有f(n) \geq cg(n)$$</p>
+</li>
+<li><p>$$\Theta(f(n))$$：Big Theta，渐近紧界，$$f,g定义在非负整数上,f(n)=\Theta(g(n))，如果\exist 常数c以及n_0,满足对\forall n \geq n_0,有c_1g(n) \leq f(n) \leq c_2g(n)$$;</p>
+<p>$$f(n)=\Theta(g(n)) \iff f(n)=O(g(n)) &amp; f(n)= \Omega(g(n))$$。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>空间复杂度：每次基本操作至多涉及常数规模的存储空间，故时间复杂度是空间复杂度的上界。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>程序</strong>：基于编程语言的算法实现=<strong>数据结构+算法</strong>。</p>
+</li>
+<li><p>算法基于数据结构，两者相辅相成（住房的布局与装修）。</p>
+</li>
+</ul>
+<h2 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h2><img src="C:\Users\ybr19\AppData\Roaming\Typora\typora-user-images\image-20210103121926737.png" srcset="/img/loading.gif" alt="image-20210103121926737" style="zoom:50%;" />
+
+<p><strong>线性表</strong>：由$$n \geq 0$$个数据元素构成的有限序列，记作$$(a_0,a_1,…a_{n-1})$$。</p>
+<ul>
+<li>逻辑关系：邻接关系，除第一个元素外每个元素有且仅有一个直接前驱，除最后一个元素外每个元素有且仅有一个直接后继。</li>
+</ul>
+<p><strong>向量</strong>：线性表元素相继存放在一片连续的存储空间（线性表基于数组的存储表示）。</p>
+<table>
+<thead>
+<tr>
+<th><strong>数组</strong></th>
+<th><strong>向量</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>高级程序设计语言</strong>  <strong>内置的数据类型</strong></td>
+<td><strong>数组的抽象和泛化，</strong>  <strong>由模板类实现</strong></td>
+</tr>
+<tr>
+<td><strong>通过下标访问</strong></td>
+<td><strong>通过秩访问</strong>  <strong>（若元素e有r个前驱元素，其秩为r）</strong></td>
+</tr>
+<tr>
+<td><strong>只能读取和修改</strong></td>
+<td><strong>带有很多操作接口</strong></td>
+</tr>
+</tbody></table>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210103140455438.png" srcset="/img/loading.gif" alt="image-20210103140455438"></p>
+<p>重点：</p>
+<pre><code class="hljs C++">秩：前驱元素个数
+<span class="hljs-built_in">find</span>(e):等于e且秩最大（从后往前找）
+search(e)：&lt;=e且秩最大（从后往前找）
+    
+deduplicate(); uniquify();
+
+<span class="hljs-built_in">put</span>(r, e); insert(r, e);</code></pre>
+
+<p>实现：</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> Rank;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DEFAULT_CAPACITY 3</span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vector</span> &#123;</span>
+<span class="hljs-keyword">protected</span>:
+    Rank _size;  <span class="hljs-comment">//当前规模</span>
+    <span class="hljs-keyword">int</span> _capacity;  <span class="hljs-comment">//容量</span>
+    T* _elem;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">//构造函数</span>
+    Vector (<span class="hljs-keyword">int</span> c = DEFAULT_CAPACITY, <span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>, T v = <span class="hljs-number">0</span>) &#123;  <span class="hljs-comment">// 容量为c，规模为s，所有元素初始为v</span>
+        _elem = <span class="hljs-keyword">new</span> T[_capacity = c];
+        <span class="hljs-keyword">for</span> (_size = <span class="hljs-number">0</span>; _size &lt; s; _elem[_size++] = v) ;
+    &#125;
+    <span class="hljs-comment">//基于复制构造</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyFrom</span><span class="hljs-params">( T <span class="hljs-keyword">const</span>* A, Rank lo, Rank hi)</span> </span>&#123;
+        _elem = <span class="hljs-keyword">new</span> T[_capacity = <span class="hljs-number">2</span> * (hi - lo)]; _size = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi)
+            _elem[_size++] = A[lo++];
+    &#125;
+    Vector (T <span class="hljs-keyword">const</span>* A, Rank n) &#123;  <span class="hljs-comment">// 注：T const* = const T* = 常量T的指针</span>
+        copyFrom(A, <span class="hljs-number">0</span>, n);
+    &#125;
+    <span class="hljs-comment">//赋值</span>
+    Vector&lt;T&gt; <span class="hljs-keyword">operator</span> = (Vector&lt;T&gt; <span class="hljs-keyword">const</span>&amp; V) &#123;
+        <span class="hljs-keyword">if</span> (_elem)
+            <span class="hljs-keyword">delete</span> []_elem;
+        copyFrom(V._elem, <span class="hljs-number">0</span>, V.<span class="hljs-built_in">size</span>());
+        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;
+    &#125;
+    <span class="hljs-comment">//析构</span>
+    ~Vector() &#123;
+        <span class="hljs-keyword">delete</span> []_elem;
+    &#125;
+    <span class="hljs-comment">//扩充</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expand</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (_size &lt; _capacity) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">if</span> (_capacity &lt; DEFAULT_CAPACIITY) _capacity = DEFAULT_capacity;
+        T* oldElem = _elem;
+        _elem = <span class="hljs-keyword">new</span> T[_capacity &lt;&lt;= <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; _size; i++)
+            _elem[i] = oldElem[i];
+        <span class="hljs-keyword">delete</span> []oldElem;
+    &#125;
+    <span class="hljs-comment">//重载[]</span>
+    T&amp; <span class="hljs-keyword">operator</span>[] (Rank r) <span class="hljs-keyword">const</span> &#123;
+        <span class="hljs-keyword">return</span> _elem[r];
+    &#125;
+    <span class="hljs-comment">//置乱</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">permute</span> <span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = _size; i &gt; <span class="hljs-number">0</span>; i--)
+            swap(_elem[i<span class="hljs-number">-1</span>], _elem[rand() % i]);
+    &#125;
+&#125;</code></pre>
+
+<h3 id="关于扩容"><a href="#关于扩容" class="headerlink" title="关于扩容"></a>关于扩容</h3><p>扩容即为<strong>动态空间管理</strong>。</p>
+<p>每次扩容一倍：总复杂度为各次内存搬移大小之和，分摊复杂度为分摊到每个被扩充的空间上。</p>
+<p>每次翻倍：总复杂度=（1+2+4+…+N）=2N，分摊复杂度=2N/N=2。</p>
+<p>每次固定：总复杂度=x+2x+…+N=N/2*N/X=N^2/2x，分摊复杂度=N/2x。</p>
 
             </article>
             <hr>
@@ -235,7 +415,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Suicide-Note/">Suicide Note</a>
+                      <a class="hover-with-bg" href="/categories/Coding/">Coding</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Coding/Daily-Learning/">Daily Learning</a>
                     
                   </div>
                 
@@ -243,7 +425,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Suicide-Note/">Suicide Note</a>
+                      <a class="hover-with-bg" href="/tags/Learning/">Learning</a>
                     
                   </div>
                 
@@ -256,18 +438,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/20/Letter-to-You/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Letter to You</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/10/07/%E7%BB%98%E7%94%BB/">
-                        <span class="hidden-mobile">绘画</span>
+                      <a href="/2021/01/01/Diary-2021-01/">
+                        <span class="hidden-mobile">Diary: 2021/01</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -540,7 +716,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/2020/10/09/%E9%81%97%E4%B9%A6%EF%BC%9A2020-10-9/');
+          var target = decodeURI('/2021/01/03/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -634,7 +810,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "遗书：2020/10/9&nbsp;",
+        "数据结构复习笔记&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
