@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      4k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21
+      58
        分钟
     </span>
   
@@ -213,7 +213,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：6 minutes ago
+                  本文最后更新于：a month ago
                 
               </p>
             
@@ -381,7 +381,7 @@ deduplicate(); uniquify();
     ~Vector() &#123;
         <span class="hljs-keyword">delete</span> []_elem;
     &#125;
-    <span class="hljs-comment">//扩充</span>
+    <span class="hljs-comment">//扩充（在已经填满的时候就会扩）</span>
     <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expand</span><span class="hljs-params">()</span> </span>&#123;
         <span class="hljs-keyword">if</span> (_size &lt; _capacity) <span class="hljs-keyword">return</span>;
         <span class="hljs-keyword">if</span> (_capacity &lt; DEFAULT_CAPACIITY) _capacity = DEFAULT_capacity;
@@ -400,12 +400,386 @@ deduplicate(); uniquify();
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = _size; i &gt; <span class="hljs-number">0</span>; i--)
             swap(_elem[i<span class="hljs-number">-1</span>], _elem[rand() % i]);
     &#125;
+    <span class="hljs-comment">//顺序查找，秩最大的为e的元素位置，否则返回lo-1</span>
+    <span class="hljs-comment">//最坏O(n),最好O(1),平均O(n)</span>
+    <span class="hljs-function">Rank <span class="hljs-title">find</span><span class="hljs-params">(T cosnt&amp; e, Rank lo, Rank hi)</span> <span class="hljs-keyword">const</span> </span>&#123;
+        <span class="hljs-keyword">while</span> ((lo &lt; hi--) &amp;&amp; (e != _elem[hi]));
+    &#125;
+    <span class="hljs-comment">//插入</span>
+    <span class="hljs-comment">//最坏O(n),最好O(1),平均O(n)</span>
+    <span class="hljs-function">Rank <span class="hljs-title">insert</span><span class="hljs-params">(Rank r, T <span class="hljs-keyword">const</span>&amp; e)</span> </span>&#123;  <span class="hljs-comment">// assert 0 &lt;= r &lt;= size</span>
+        expand();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = _size; i &gt; r; i--)
+            _elem[i] = _elem[i<span class="hljs-number">-1</span>];
+        _elem[r] = e; _size++;
+        <span class="hljs-keyword">return</span> r;
+    &#125;
+    <span class="hljs-comment">//删除区间[lo, hi)</span>
+    <span class="hljs-comment">//最坏O(n),最好O(1),平均O(n)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">remove</span><span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (lo == hi) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>( hi &lt; _size )
+            _elem[lo++] = _elem[hi++];
+        _size = lo;
+        shrink();
+        <span class="hljs-keyword">return</span> hi - lo;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">remove</span><span class="hljs-params">(Rank r)</span> </span>&#123;
+        <span class="hljs-built_in">remove</span>(r, r+<span class="hljs-number">1</span>);
+    &#125;
+    <span class="hljs-comment">//唯一化</span>
+    <span class="hljs-comment">//总体最坏复杂度O(n^2)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">deduplicate</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">int</span> oldSize = _size;
+        Rank i = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (i &lt; _size)
+            (<span class="hljs-built_in">find</span>(_elem[i], <span class="hljs-number">0</span>, i) &lt; <span class="hljs-number">0</span>) ? i++ : <span class="hljs-built_in">remove</span>(i);  <span class="hljs-comment">//在前缀中找雷同</span>
+        <span class="hljs-keyword">return</span> oldSize - _size;
+    &#125;
+    <span class="hljs-comment">//遍历</span>
+    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> VST&gt;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span><span class="hljs-params">(VST&amp; visit)</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; _size; ++i) visit(_elem[i]);
+    &#125;
+    <span class="hljs-comment">//判序</span>
+    <span class="hljs-comment">//返回逆序相邻元素对的总数,n=0则有序</span>
+    <span class="hljs-comment">//O(n)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">disordered</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; _size; ++i)
+            <span class="hljs-keyword">if</span> (_elem[i - <span class="hljs-number">1</span>] &gt; _elem[i]) n++;
+        <span class="hljs-keyword">return</span> n;
+    &#125;
+    
+    <span class="hljs-comment">//归并排序</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span> <span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (hi - lo &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">int</span> mi = (lo + hi) / <span class="hljs-number">2</span>;
+        mergeSort(lo, mi); mergeSort(mi, hi);
+        merge(lo, mi, hi);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(Rank lo, Rank mi, Rank hi)</span> </span>&#123;
+        T* A = _elem + lo;
+        <span class="hljs-keyword">int</span> lb = mi - lo; T* B = <span class="hljs-keyword">new</span> T[lb];
+        <span class="hljs-keyword">for</span> (Rank i = <span class="hljs-number">0</span>; i &lt; lb; B[i] = A[i++]);
+        <span class="hljs-keyword">int</span> lc = hi - mi; T* C = _elem + mi;
+        <span class="hljs-keyword">for</span> (Rank i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = <span class="hljs-number">0</span>; (j &lt; lb) || (k &lt; lc); ) &#123;
+            <span class="hljs-keyword">if</span> ((j &lt; lb) &amp;&amp; ( !(k &lt; lc) || (B[j] &lt;= C[k]))) A[i++] = B[j++];
+            <span class="hljs-keyword">if</span> ((k &lt; lc) &amp;&amp; ( !(j &lt; lb) || (C[k] &lt; B[j]))) A[i++] = C[k++];  <span class="hljs-comment">//注意到使用小于，故是稳定排序</span>
+        &#125;
+        <span class="hljs-keyword">delete</span> []B;
+    &#125;
+    
+    <span class="hljs-comment">//插入排序</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insertSort</span><span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = lo+<span class="hljs-number">1</span>; j &lt; hi; j++) &#123;
+            T key = _elem[j];
+            <span class="hljs-keyword">int</span> i = j - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (i &gt;= lo &amp;&amp; _elem[i] &gt; key) &#123; <span class="hljs-comment">// 是&gt;所以是稳定排序</span>
+                _elem[i+<span class="hljs-number">1</span>] = _elem[i];
+                i--;
+            &#125;
+            _elem[i+<span class="hljs-number">1</span>] = key;
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//冒泡排序，顺次交换相邻元素</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort</span><span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> times = <span class="hljs-number">0</span>; <span class="hljs-keyword">bool</span> exchange = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">int</span> nSort = hi - lo;
+        <span class="hljs-keyword">while</span> (times &lt; nSort &amp;&amp; exchange) &#123;  <span class="hljs-comment">//至多n-1趟冒泡</span>
+            exchange = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = hi - <span class="hljs-number">1</span>; j &gt; lo + times; j--)
+                <span class="hljs-keyword">if</span> (_elem[j<span class="hljs-number">-1</span>] &gt; _elem[j]) &#123;
+                    swap(_elem[j<span class="hljs-number">-1</span>], _elem[j]);
+                    exchange = <span class="hljs-literal">true</span>;
+                &#125;
+            times++;
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//选择排序，选出最大/最小</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">selectionSort</span><span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (lo &lt; --hi)
+            swap(_elem[<span class="hljs-built_in">max</span>(lo, hi)], _elem[hi]); <span class="hljs-comment">//直接交换</span>
+    &#125;
+    <span class="hljs-function">Rank <span class="hljs-title">max</span><span class="hljs-params">(Rank lo, Rank hi)</span> </span>&#123;
+        Rank mx = hi;
+        <span class="hljs-keyword">while</span> (lo &lt; hi--)
+            <span class="hljs-keyword">if</span> (_elem[hi] &gt; _elem[mx]) mx = hi;  <span class="hljs-comment">//严格大，故总给出秩最大的</span>
+        <span class="hljs-keyword">return</span> mx;
+    &#125;
+    
+    <span class="hljs-comment">//有序向量唯一化</span>
+    <span class="hljs-comment">//低效版，最坏O(n^2)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">uniquify</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">int</span> oldSize = _size; <span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (i &lt; _size)
+            _elem[i<span class="hljs-number">-1</span>] == _elem[i] ? <span class="hljs-built_in">remove</span>(i) : i++;
+        <span class="hljs-keyword">return</span> oldSize - _size;  <span class="hljs-comment">//向量规模变化量</span>
+    &#125;
+    <span class="hljs-comment">//高效版</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">uniquify</span><span class="hljs-params">()</span> </span>&#123;
+        Rank i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (++j &lt; _size)
+            <span class="hljs-keyword">if</span> (_elem[i] != _elem[j])
+                _elem[++i] = _elem[j];
+        _size = ++i;
+        shrink();
+        <span class="hljs-keyword">return</span> j - i;
+    &#125;
+    
+    <span class="hljs-comment">//二分查找</span>
+    <span class="hljs-comment">//版本A:三分支，多个命中不能保证秩最大，查找失败不能指示失败位置</span>
+    <span class="hljs-comment">//查找长度：有序向量的比较操作的次数</span>
+    <span class="hljs-comment">//理论证明：平均查找长度为O(1.5*log2n)</span>
+    <span class="hljs-comment">//利用左分支比较次数少于右分支，可以通过加长前区域长度，如改为fibonacci查找，变为O(1.44*log2n)</span>
+    <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span><span class="hljs-params">(T* A, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) &#123;
+            Rank mi = (lo + hi) &gt;&gt; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> ( e &lt; A[mi] ) hi = mi;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (A[mi] &lt; e) lo = mi + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> mi;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    <span class="hljs-comment">//版本B：在有序向量[lo,hi)内查找元素e</span>
+    <span class="hljs-comment">//多个命中能返回最大秩，但不能提示失败位置</span>
+    <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span> <span class="hljs-params">(T* A, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span> &lt; hi - lo) &#123;
+            Rank mi = (lo + hi) &gt;&gt; <span class="hljs-number">1</span>;
+            (e &lt; A[mi]) ? hi = mi : lo = mi;
+        &#125;
+        <span class="hljs-keyword">return</span> (e == A[lo]) ? lo : <span class="hljs-number">-1</span>;
+    &#125;
+    <span class="hljs-comment">//版本C</span>
+    <span class="hljs-comment">//能返回最大秩，查找失败返回失败位置，返回了&lt;=e的元素的最大秩</span>
+    <span class="hljs-comment">//可以这么理解：查找区间变为A[lo-1,hi],其中A[lo-1]=-\infty, A[hi]=+\infty</span>
+    <span class="hljs-comment">//始终有A[lo-1] &lt;= e &lt; A[hi]</span>
+    <span class="hljs-function"><span class="hljs-keyword">static</span> Rank <span class="hljs-title">binSearch</span> <span class="hljs-params">(T* A, T <span class="hljs-keyword">const</span>&amp; e, Rank lo, Rank hi)</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) &#123;
+            Rank mi = (lo + hi) &gt;&gt; <span class="hljs-number">1</span>;
+            (e &lt; A[mi]) ? hi = mi : lo = mi + <span class="hljs-number">1</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> --lo;
+    &#125;
 &#125;</code></pre>
 
 <h3 id="关于扩容"><a href="#关于扩容" class="headerlink" title="关于扩容"></a>关于扩容</h3><p>扩容即为<strong>动态空间管理</strong>。</p>
 <p>每次扩容一倍：总复杂度为各次内存搬移大小之和，分摊复杂度为分摊到每个被扩充的空间上。</p>
 <p>每次翻倍：总复杂度=（1+2+4+…+N）=2N，分摊复杂度=2N/N=2。</p>
 <p>每次固定：总复杂度=x+2x+…+N=N/2*N/X=N^2/2x，分摊复杂度=N/2x。</p>
+<h3 id="关于各种排序的时间-空间复杂度"><a href="#关于各种排序的时间-空间复杂度" class="headerlink" title="关于各种排序的时间/空间复杂度"></a>关于各种排序的时间/空间复杂度</h3><img src="C:\Users\ybr19\AppData\Roaming\Typora\typora-user-images\image-20210103201338050.png" srcset="/img/loading.gif" alt="image-20210103201338050" style="zoom: 67%;" />
+
+<h2 id="链表（列表）"><a href="#链表（列表）" class="headerlink" title="链表（列表）"></a>链表（列表）</h2><p>按存储结构分，一种序列（线性表）的实现方式：元素的物理存放位置不是线性，而是任意。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>&#123;</span>
+    <span class="hljs-keyword">int</span> data;
+    ListNode* next;
+    ListNode(<span class="hljs-keyword">int</span> k, ListNode* next_ = <span class="hljs-literal">NULL</span>)
+        : data&#123;k&#125;, next&#123;next_&#125; &#123;&#125;
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">List</span>&#123;</span>
+<span class="hljs-keyword">private</span>:
+    ListNode* first;  <span class="hljs-comment">//额外的表头指针</span>
+    List() &#123; first = <span class="hljs-keyword">new</span> LinkNode; &#125;
+&#125;</code></pre>
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>主要时间来源于<strong>访问</strong>。</p>
+<p>表头插入特殊，故可以增加额外的表头结点。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">// 0返回表头</span>
+<span class="hljs-comment">// &lt;0返回NULL</span>
+<span class="hljs-function">LinkNode* <span class="hljs-title">List::Locate</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> ( i &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    ListNode* current = first; <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (current != <span class="hljs-literal">NULL</span> &amp;&amp; k &lt; i) &#123;
+        current = current-&gt;next; k++;
+    &#125;
+    <span class="hljs-keyword">return</span> current;  <span class="hljs-comment">//超出地址会返回NULL</span>
+&#125;
+
+<span class="hljs-comment">// 插入在第i个节点之后</span>
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">List::Insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> &amp;x)</span> </span>&#123;
+    ListNode* current = Locate(i);
+    <span class="hljs-keyword">if</span> (current == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    ListNode* newNode = <span class="hljs-keyword">new</span> ListNode(x);
+    newNode-&gt;next = current-&gt;next;
+    current-&gt;next = newNode;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;</code></pre>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>空表/表头特殊。</p>
+<p>定位置被删除节点的前继节点。</p>
+<pre><code class="hljs C++"><span class="hljs-comment">//删除第i个元素</span>
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">List::Remove</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, T&amp; x)</span> </span>&#123;
+    ListNode* current = Locate(i<span class="hljs-number">-1</span>);
+    <span class="hljs-keyword">if</span> (current == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    ListNode* del = current-&gt;next;
+    current-&gt;next = del-&gt;next;
+    <span class="hljs-keyword">delete</span> del;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;</code></pre>
+
+<h3 id="双向列表带表头"><a href="#双向列表带表头" class="headerlink" title="双向列表带表头"></a>双向列表带表头</h3><pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> Rank;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ListNodePosi(T) ListNode<span class="hljs-meta-string">&lt;T&gt;*</span></span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>&#123;</span>
+    T data;
+    ListNodePosi(T) pred;
+    ListNodePosi(T) succ;
+    
+    ListNodePosi(T) insertAsPred(T <span class="hljs-keyword">const</span>&amp; e) &#123;
+        ListNodePosi(T) x = <span class="hljs-keyword">new</span> ListNode(e, pred, <span class="hljs-keyword">this</span>);
+        pred-&gt;succ = x;
+        pred = x;
+    &#125;
+    ListNodePosi(T) insertAsSucc(T <span class="hljs-keyword">const</span>&amp; e);
+&#125;
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">List</span>&#123;</span>
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">int</span> _size;
+    ListNodePosi(T) header;  <span class="hljs-comment">//头尾哨兵节点</span>
+    ListNodePosi(T) trailer;
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">clear</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyNodes</span><span class="hljs-params">(ListNodePosi(T) p, <span class="hljs-keyword">int</span> n)</span></span>;
+<span class="hljs-keyword">public</span>:
+    List() &#123; init(); &#125;
+    List( List&lt;T&gt; <span class="hljs-keyword">const</span>&amp; L);
+    List(List&lt;T&gt; <span class="hljs-keyword">const</span>&amp; L, Rank r, <span class="hljs-keyword">int</span> n);
+    List (ListNodePosi(T) p, <span class="hljs-keyword">int</span> n);
+    ~List() &#123;  <span class="hljs-comment">//O(n)</span>
+        <span class="hljs-keyword">while</span>(<span class="hljs-number">0</span> &lt; _size) <span class="hljs-built_in">remove</span>(header-&gt;succ);
+        <span class="hljs-keyword">delete</span> header;
+        <span class="hljs-keyword">delete</span> trailer;
+    &#125;
+    
+    <span class="hljs-function">T <span class="hljs-title">remove</span><span class="hljs-params">(ListNodePosi(T) p)</span> </span>&#123;
+        T e = p-&gt;data;
+        p-&gt;pred-&gt;succ = p-&gt;succ;
+        p-&gt;succ-&gt;pred = p-&gt;pred;
+        <span class="hljs-keyword">delete</span> p;_size--;
+        <span class="hljs-keyword">return</span> e;
+    &#125;
+    
+    <span class="hljs-comment">//无序列表查找</span>
+    <span class="hljs-comment">//在p的n个真前驱中，找到等于e的秩最大者</span>
+    <span class="hljs-comment">//p可能为trailer</span>
+    <span class="hljs-comment">//O（n）</span>
+    ListNodePosi(T) <span class="hljs-built_in">find</span>(T <span class="hljs-keyword">const</span>&amp; e, <span class="hljs-keyword">int</span> n, ListNodePosi(T) p <span class="hljs-keyword">const</span>) &#123;
+        <span class="hljs-keyword">while</span>(<span class="hljs-number">0</span> &lt; n--)  <span class="hljs-comment">//n次</span>
+            <span class="hljs-keyword">if</span> (e == (p = p-&gt;pred)-&gt;data) <span class="hljs-keyword">return</span> p;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    &#125;
+    
+    <span class="hljs-comment">//有序列表查找</span>
+    ListNodePosi(T) search(T <span class="hljs-keyword">const</span>&amp; e, <span class="hljs-keyword">int</span> n, ListNodePosi(T) p) <span class="hljs-keyword">const</span> &#123;
+        <span class="hljs-keyword">while</span> (<span class="hljs-number">0</span> &lt;= n--)
+            <span class="hljs-keyword">if</span> ((p = p-&gt;pred)-&gt;data &lt;= e) <span class="hljs-keyword">break</span>;  <span class="hljs-comment">//最左关键码为-inf，故最后一次必然跳出</span>
+        <span class="hljs-keyword">return</span> p;
+        <span class="hljs-comment">//失败会返回左边界的前驱（可能是header）</span>
+    &#125;
+    
+    <span class="hljs-comment">//唯一化：O(n^2)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">deduplicate</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (_size &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> oldSize = _size;
+        ListNodePosi(T) p = header; Rank r = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (trailer != (p = p-&gt;succ)) &#123;
+            ListNodePosi(T) q = <span class="hljs-built_in">find</span>(p-&gt;data, r, p);
+            q ? <span class="hljs-built_in">remove</span>(q) : r++;
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//有序列表唯一化：高效版</span>
+    <span class="hljs-comment">//反复考察相邻节点，O(n)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">uniquify</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (_size &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> oldSize = _size;
+        ListNodePosi(T) p = first();
+        ListNodePosi(T) q;
+        <span class="hljs-keyword">while</span> (trailer != (q = p-&gt;succ))
+            <span class="hljs-keyword">if</span> (p-&gt;data != q-&gt;data) p = q;
+        	<span class="hljs-keyword">else</span> <span class="hljs-built_in">remove</span>(q);
+        <span class="hljs-keyword">return</span> oldSize - _size;
+    &#125;
+    
+    <span class="hljs-comment">//插入排序</span>
+    <span class="hljs-comment">//稳定</span>
+    <span class="hljs-comment">//最好O(n),最坏O(n^2),总体O(n^2)</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insertionSort</span><span class="hljs-params">(ListNodePosi(T) p, <span class="hljs-keyword">int</span> n)</span></span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>; r &lt; n; r++) &#123;
+            insertA(search(p-&gt;data, r, p), p-&gt;data);  <span class="hljs-comment">//新建了以p的数据为数据的节点插入</span>
+            p = p-&gt;succ; <span class="hljs-built_in">remove</span>(p-&gt;pred);
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//选择排序</span>
+    <span class="hljs-comment">//稳定,O(n^2)</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">selectionSort</span><span class="hljs-params">(ListNodePosi(T) p, <span class="hljs-keyword">int</span> n)</span> </span>&#123;
+        ListNodePosi(T) head = p-&gt;pred;
+        ListNodePosi(T) tail = p;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) tail = tail-&gt;succ;
+        <span class="hljs-comment">//待排序区间为（head, tail）</span>
+        <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span> &lt; n) &#123;
+            ListNodePosi(T) <span class="hljs-built_in">max</span> = selectMax(head-&gt;succ, n);<span class="hljs-comment">//歧义时后者优先</span>
+            insertB(tail, <span class="hljs-built_in">remove</span>(<span class="hljs-built_in">max</span>));
+            tail = tail-&gt;pred; n--;
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//归并排序：**就地排序**</span>
+    <span class="hljs-comment">//p起n个元素，与L中q起m个元素归并</span>
+    <span class="hljs-comment">//O（m+n）</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(ListNodePosi(T) &amp; p, <span class="hljs-keyword">int</span> n, List&lt;T&gt; &amp;L, ListNodePosi(T) q, <span class="hljs-keyword">int</span> m )</span> </span>&#123;
+        ListNodePosi(T) pp = p-&gt;pred;
+        <span class="hljs-keyword">while</span> (<span class="hljs-number">0</span> &lt; m)  <span class="hljs-comment">//q尚未移出区间</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt; n &amp;&amp; p-&gt;data &lt;= q-&gt;data) &#123;
+                <span class="hljs-keyword">if</span> (q == (p = p-&gt;succ)) <span class="hljs-keyword">break</span>; n--; 
+            &#125;
+       		<span class="hljs-keyword">else</span> &#123;
+                insertB(p, L.<span class="hljs-built_in">remove</span>((q = q-&gt;succ)-&gt;pred)); m--;
+            &#125;
+        p = pp-&gt;succ;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(ListNodePosi(T) &amp;p, <span class="hljs-keyword">int</span> n)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">int</span> m = n &gt;&gt; <span class="hljs-number">1</span>;
+        ListNodePosi(T) q = p;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; ++i) q = q-&gt;succ;
+        mergeSort(p, m);
+        mergeSort(q, n-m);
+        merge(p, m, *<span class="hljs-keyword">this</span>, q, n-m);
+    &#125;
+&#125;;
+
+T&amp; List&lt;T&gt;::<span class="hljs-keyword">operator</span>[] (Rank r) <span class="hljs-keyword">const</span>&#123;
+    ListNodePosi(T) p = first();
+    <span class="hljs-keyword">while</span>(<span class="hljs-number">0</span> &lt; r--) p = p-&gt;succ;
+    <span class="hljs-keyword">return</span> p-&gt;data;
+&#125;</code></pre>
+
+
+
+<pre><code class="hljs C++">求长：<span class="hljs-built_in">size</span>();
+首/尾节点：first/last();
+首/末节点插入:insertAsFirst/Last(e);
+作为当前节点的前/后插入:insertB/A(p, e);
+删除p位置的节点，返回数值:<span class="hljs-built_in">remove</span>(p);
+查找目标元素e，失败返回<span class="hljs-literal">NULL</span>:<span class="hljs-built_in">find</span>(e);
+遍历：traverse();
+判是否非降序：disordered();
+排序：sort();
+去重：deduplicate();
+
+有序列表特殊去重：uniquify();
+有序列表返回不大于e且秩最大的元素：search(e);</code></pre>
+
+<p><strong>列表无法二分查找！</strong></p>
+<p><img src="C:%5CUsers%5Cybr19%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210107151422749.png" srcset="/img/loading.gif" alt="image-20210107151422749"></p>
+<p>所有排序都就地，都稳定。归并更适合用列表实现（就地）。</p>
+<p>从存储结构分类是得到向量和列表，下面对运算做一定的约束。</p>
 
             </article>
             <hr>
@@ -437,6 +811,12 @@ deduplicate(); uniquify();
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2021/01/19/Review-%E3%80%8A%E4%BD%A0%E5%BD%93%E5%83%8F%E9%B8%9F%E9%A3%9E%E5%BE%80%E4%BD%A0%E7%9A%84%E5%B1%B1%E3%80%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">书评: 《你当像鸟飞往你的山》</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
