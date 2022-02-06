@@ -17,10 +17,19 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Archives - Hexo</title>
+  <title>Unity学习笔记 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -130,14 +139,56 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/bg/other_pages.png') no-repeat center center;
+         style="background: url('/img/bg/post.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.15)">
           <div class="container text-center white-text fadeInUp">
             <span class="h2" id="subtitle">
               
             </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2022-02-05 17:12">
+      February 5, 2022 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      690 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
 
             
           </div>
@@ -150,49 +201,152 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">48 posts in total.</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/09/16/%E9%85%B1%E7%88%86%E8%80%81%E4%BF%9E/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">酱爆老俞</span>
-      <span style="float: right;">09-16</span>
-    </a>
-  
-    
-    <a href="/2020/09/01/Diary-2020-09/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2020/09</span>
-      <span style="float: right;">09-01</span>
-    </a>
-  
-    
-    <a href="/2020/09/01/Daily-Learning-%E4%BD%BF%E7%94%A8%E5%AE%8F%E5%92%8Cshell-script/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Daily Learning: 使用宏和shell script</span>
-      <span style="float: right;">09-01</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：13 minutes ago
+                
+              </p>
+            
+            <article class="markdown-body">
+              <blockquote>
+<p>不知道该采用什么格式……目前是跟着《Unity3D游戏开发》学，书没看几页版本换了三个。</p>
+<p>就按照每天日志来写好了，正好记录下每天看了几页。</p>
+</blockquote>
+<h2 id="2-5-P97"><a href="#2-5-P97" class="headerlink" title="2.5 P97"></a>2.5 P97</h2><p><strong>Time.timeScale &amp; Time.deltaTime</strong>：时间缩放比例 与 每帧所需时间</p>
+<p>Time.timeScale：</p>
+<ul>
+<li>=1，游戏正常进行，deltaTime = 0.01</li>
+<li>=0，游戏暂停，deltaTime = 0</li>
+<li>=0.5，游戏慢放，deltaTime = 0.005，意味着每帧时间缩短，</li>
+</ul>
+<p>其影响：</p>
+<table>
+<thead>
+<tr>
+<th>影响</th>
+<th>不影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FixedUpdate</td>
+<td>Update, LateUpdate（频率取决于帧内计算量，本就没有固定速度）</td>
+</tr>
+<tr>
+<td>Time.deltaTime</td>
+<td>Time.unscaledDeltaTime, Time.fixedDeltatime</td>
+</tr>
+<tr>
+<td>Time.time的流逝速率</td>
+<td>Time.unscaledTime的流逝速率</td>
+</tr>
+</tbody></table>
+<p>其中：</p>
+<blockquote>
+<p>Update和FixedUpdate：每一帧调用一次，帧时间不固定，通常用于监听输入、处理脚本事件</p>
+<p>FixedUpdate：固定更新，每<code>fixedTimestep=0.02s</code>调用一次，独立于帧速率(frame rate=FPS)，通常用于执行物理计算</p>
+</blockquote>
+<blockquote>
+<p>deltaTime：上一帧完成的时间，是游戏内时间</p>
+<p>fixedDeltatime：是物理计算及fixedUpdate等固定帧更新的时间间隔，是游戏内时间</p>
+</blockquote>
+<p>Unity使用固定时间间隔（fixedTimestep）来执行模拟，fixedUpdate的执行速率完全取决于fixedTimeStep。fixedTimeStep越短，物理更新（physics updates）越频繁，系统负荷越大。</p>
+<p>：如果游戏的帧率比fixedTimestep要快，那么就会有一些帧不执行fixedUpdate（fixedTimeStep=0.02，fps=60，则60帧里只有50帧执行fixedUpdate）。</p>
+<p>：如果游戏的帧率比fixedTimestep要慢，那么就会每帧会执行&gt;=1次fixedUpdate（fixedTimeStep=0.01，fps=25，则每帧执行4次fixedUpdate）。</p>
+<img src="Unity学习笔记.assets/time-flowchart.png" srcset="/img/loading.gif" alt="img" style="zoom: 67%;" />
 
+<p>maximumDeltaTime是用于限制deltaTime，确保在经过很慢的一帧过后过高的deltaTime不会带来问题。</p>
+<p>如果有一次帧很慢，而帧更新必须被挤在physics updates之间，故而可能一帧后需要进行大量次数的physics updates，而画面没有更新，画面就与物理系统不同步了。故而Unity提供maximum allowed timestep来限制用于进行物理更新的时间，从而限制一帧内FixedUpdate被调用的次数。</p>
+<p>timeScale是用来表示游戏时间相对于现实时间的流逝比例，&gt;1是加速，&lt;1是减速，=0停滞。timeScale不会影响执行速度，而是改变Update和FixedUpdate接收到的deltaTime和fixedDeltaTime的值。（文档内部似乎有冲突）</p>
+<p>：deltaTime *= timeScale。</p>
+<p>：fixedDeltaTime不变，永远与游戏时间成比例。从而假设timeScale=0.5，那么fixedUpdate调用速度实际变慢。（若fixedDeltaTime *= timeScale，则fixedUpdate的实际调用速度不变）</p>
+<blockquote>
+<p>time: 从程序开始运行的时间，是游戏内时间</p>
+<p>fixedTime：从程序开始到上次FixedUpdate的时间，是游戏内时间</p>
+<p>unscaledTime：从程序开始的时间，是实际时间</p>
+</blockquote>
+<p>通常的移动代码：</p>
+<pre><code class="hljs c#">void Update() &#123;
+    cube.Translate(Vector3.forward * Time.deltaTime);
+&#125;</code></pre>
 
+<p>从而做到每秒速度均衡。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Coding/">Coding</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Coding/">Coding</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Notes/">Notes</a>
+                    
+                  </div>
+                
               </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/13/Diary-2021-12/">
+                        <span class="hidden-mobile">Diary: 2021/12</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
             </div>
+
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -433,10 +587,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/09/index.html');
+          var target = decodeURI('/2022/02/05/Unity%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -498,6 +652,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -505,7 +684,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "Unity学习笔记&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -520,6 +699,23 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -533,6 +729,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 

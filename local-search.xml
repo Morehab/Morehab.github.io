@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>Unity学习笔记</title>
+    <link href="/2022/02/05/Unity%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <url>/2022/02/05/Unity%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>不知道该采用什么格式……目前是跟着《Unity3D游戏开发》学，书没看几页版本换了三个。</p><p>就按照每天日志来写好了，正好记录下每天看了几页。</p></blockquote><h2 id="2-5-P97"><a href="#2-5-P97" class="headerlink" title="2.5 P97"></a>2.5 P97</h2><p><strong>Time.timeScale &amp; Time.deltaTime</strong>：时间缩放比例 与 每帧所需时间</p><p>Time.timeScale：</p><ul><li>=1，游戏正常进行，deltaTime = 0.01</li><li>=0，游戏暂停，deltaTime = 0</li><li>=0.5，游戏慢放，deltaTime = 0.005，意味着每帧时间缩短，</li></ul><p>其影响：</p><table><thead><tr><th>影响</th><th>不影响</th></tr></thead><tbody><tr><td>FixedUpdate</td><td>Update, LateUpdate（频率取决于帧内计算量，本就没有固定速度）</td></tr><tr><td>Time.deltaTime</td><td>Time.unscaledDeltaTime, Time.fixedDeltatime</td></tr><tr><td>Time.time的流逝速率</td><td>Time.unscaledTime的流逝速率</td></tr></tbody></table><p>其中：</p><blockquote><p>Update和FixedUpdate：每一帧调用一次，帧时间不固定，通常用于监听输入、处理脚本事件</p><p>FixedUpdate：固定更新，每<code>fixedTimestep=0.02s</code>调用一次，独立于帧速率(frame rate=FPS)，通常用于执行物理计算</p></blockquote><blockquote><p>deltaTime：上一帧完成的时间，是游戏内时间</p><p>fixedDeltatime：是物理计算及fixedUpdate等固定帧更新的时间间隔，是游戏内时间</p></blockquote><p>Unity使用固定时间间隔（fixedTimestep）来执行模拟，fixedUpdate的执行速率完全取决于fixedTimeStep。fixedTimeStep越短，物理更新（physics updates）越频繁，系统负荷越大。</p><p>：如果游戏的帧率比fixedTimestep要快，那么就会有一些帧不执行fixedUpdate（fixedTimeStep=0.02，fps=60，则60帧里只有50帧执行fixedUpdate）。</p><p>：如果游戏的帧率比fixedTimestep要慢，那么就会每帧会执行&gt;=1次fixedUpdate（fixedTimeStep=0.01，fps=25，则每帧执行4次fixedUpdate）。</p><img src="Unity学习笔记.assets/time-flowchart.png" srcset="/img/loading.gif" alt="img" style="zoom: 67%;" /><p>maximumDeltaTime是用于限制deltaTime，确保在经过很慢的一帧过后过高的deltaTime不会带来问题。</p><p>如果有一次帧很慢，而帧更新必须被挤在physics updates之间，故而可能一帧后需要进行大量次数的physics updates，而画面没有更新，画面就与物理系统不同步了。故而Unity提供maximum allowed timestep来限制用于进行物理更新的时间，从而限制一帧内FixedUpdate被调用的次数。</p><p>timeScale是用来表示游戏时间相对于现实时间的流逝比例，&gt;1是加速，&lt;1是减速，=0停滞。timeScale不会影响执行速度，而是改变Update和FixedUpdate接收到的deltaTime和fixedDeltaTime的值。（文档内部似乎有冲突）</p><p>：deltaTime *= timeScale。</p><p>：fixedDeltaTime不变，永远与游戏时间成比例。从而假设timeScale=0.5，那么fixedUpdate调用速度实际变慢。（若fixedDeltaTime *= timeScale，则fixedUpdate的实际调用速度不变）</p><blockquote><p>time: 从程序开始运行的时间，是游戏内时间</p><p>fixedTime：从程序开始到上次FixedUpdate的时间，是游戏内时间</p><p>unscaledTime：从程序开始的时间，是实际时间</p></blockquote><p>通常的移动代码：</p><pre><code class="hljs c#">void Update() &#123;    cube.Translate(Vector3.forward * Time.deltaTime);&#125;</code></pre><p>从而做到每秒速度均衡。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Coding</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Coding</tag>
+      
+      <tag>Notes</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Diary: 2021/12</title>
     <link href="/2021/12/13/Diary-2021-12/"/>
     <url>/2021/12/13/Diary-2021-12/</url>
