@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      690 字
+      1.4k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      17
        分钟
     </span>
   
@@ -213,7 +213,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：13 minutes ago
+                  本文最后更新于：8 months ago
                 
               </p>
             
@@ -221,8 +221,11 @@
               <blockquote>
 <p>不知道该采用什么格式……目前是跟着《Unity3D游戏开发》学，书没看几页版本换了三个。</p>
 <p>就按照每天日志来写好了，正好记录下每天看了几页。</p>
+<p>补充！而非摘抄！书上的内容不记！</p>
 </blockquote>
-<h2 id="2-5-P97"><a href="#2-5-P97" class="headerlink" title="2.5 P97"></a>2.5 P97</h2><p><strong>Time.timeScale &amp; Time.deltaTime</strong>：时间缩放比例 与 每帧所需时间</p>
+<h2 id="被跳过的部分"><a href="#被跳过的部分" class="headerlink" title="被跳过的部分"></a>被跳过的部分</h2><p>第三章</p>
+<p>P105</p>
+<h2 id="2-5-P97-100"><a href="#2-5-P97-100" class="headerlink" title="2.5 P97-100"></a>2.5 P97-100</h2><p><strong>Time.timeScale &amp; Time.deltaTime</strong>：时间缩放比例 与 每帧所需时间</p>
 <p>Time.timeScale：</p>
 <ul>
 <li>=1，游戏正常进行，deltaTime = 0.01</li>
@@ -280,6 +283,87 @@
 &#125;</code></pre>
 
 <p>从而做到每秒速度均衡。</p>
+<p>设置目标FPS：</p>
+<pre><code class="hljs C#">Application.targetFrameRate &#x3D; 30;</code></pre>
+
+
+
+<h2 id="2-7-P100-105"><a href="#2-7-P100-105" class="headerlink" title="2.7 P100-105"></a>2.7 P100-105</h2><p><strong>Awake &amp; Start</strong>：</p>
+<p>Unity会同时处理所有脚本：先执行所有脚本的Awake（若有），再执行Start。</p>
+<p>Awake用于初始化，Start可访问其它脚本数据。</p>
+<p><strong>序列化</strong></p>
+<p>把游戏数据写入文件，从而更新/调整只需要更改文件，不需要重新编译游戏。</p>
+<p>数据写入文件，数据接口写入类，再写一个文件用于读写。</p>
+<p>显示在Inspector中的属性都具有Serialize功能（再次读取Unity时是有值的，不需要再次赋值）。</p>
+<p>private需要用[SerializeField]来设置序列化，就会显示在面板上。外部类依旧无法访问。</p>
+<p>public可以用[HideInspector]来取消显示。</p>
+<p>还可以通过<code>Range(0, 1)</code>来设置范围，int/float都适用。</p>
+<pre><code class="hljs python">[Range(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)][SerializeField] private int private_id;</code></pre>
+
+<p>可以通过如下代码来获得、修改、存储序列化数据：</p>
+<pre><code class="hljs c#">&#x2F;&#x2F; 更新数据
+serializedObject.Update();
+&#x2F;&#x2F; 获取数据信息
+SerializedProperty property &#x3D; serializedObject.FindProperty(&quot;private_id&quot;);
+&#x2F;&#x2F; 赋值数据
+property.intValue &#x3D; EditorGUILayout.IntField(&quot;ID&quot;, property.intValue);
+&#x2F;&#x2F; 保存数据
+serializedObject.ApplyModifiedProperties();</code></pre>
+
+<p><strong>Asset &amp; Object</strong>：</p>
+<p>Asset：硬盘上文件，包含一到多个Object。（如：材质 引用1~多个 纹理）</p>
+<p>Object：序列化数据，描述了资源实例，是UnityEngine.Object的子类。</p>
+<p>序列化时，包括：</p>
+<p>：文件的GUID，标记Asset文件，存储在.meta中。</p>
+<p>：Local ID，标记Object，是局部唯一的。</p>
+<h2 id="2-8-P44"><a href="#2-8-P44" class="headerlink" title="2.8 P44-"></a>2.8 P44-</h2><p><strong>MenuItem</strong>：</p>
+<pre><code class="hljs c#">MenuItem(string itemName, bool isValidateFunction, int priority)</code></pre>
+
+<p>itemName：路径</p>
+<p>priority：小的显示靠上，相差&gt;=11默认为不同组。默认1000。</p>
+<p>isValidateFunction：bool，是验证按钮是否显示的函数</p>
+<pre><code class="hljs c#">[MenuItem(&quot;Assets&#x2F;My Tools&#x2F;Tools 1&quot;, true, 1)] &#x2F;&#x2F; 函数返回bool，表示是否显示该菜单按钮
+static bool Show()
+&#123;
+    return Selection.activeObject !&#x3D; null;
+&#125;
+[MenuItem(&quot;Assets&#x2F;My Tools&#x2F;Tools 1&quot;, false, 1)] &#x2F;&#x2F; 函数为被点击时执行的函数
+static void MyTools1()
+&#123;
+    Debug.Log(Selection.activeObject.name);
+&#125;</code></pre>
+
+<p><strong>InitializeOnLoadMethod</strong>：</p>
+<pre><code class="hljs json"><span class="hljs-comment">// 第一次打开编辑器运行一次，之后每次进入Play都运行一次</span>
+[InitializeOnLoadMethod]
+<span class="hljs-comment">// 在每次进入 Play 模式时运行一次，还可以通过参数确定在加载场景之前还是之后调用方法。</span>
+[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]</code></pre>
+
+<p><strong>委托 Delegate</strong>：</p>
+<p>观察者模式：主题Subject，Observer可以订阅和取消订阅，Observer会收到消息（当Subject内数据改变）</p>
+<p>C#用委托实现回调函数。</p>
+<pre><code class="hljs c#">public class DelegateScript: MonoBehaviour
+&#123;
+    &#x2F;&#x2F; 声明一个委托类型，实例引用一个方法
+    internal delegate void MyDelegate(int num);
+    MyDelegate myDelegate;
+    
+    void Start()
+    &#123;
+        &#x2F;&#x2F; 实例myDelegate引用方法PrintNum
+        myDelegate &#x3D; PrintNum; &#x2F;&#x2F; 赋值时，PrintNum可以有多种参数，编译器会自动选择合适的重载版本
+        myDelegate(50);
+    &#125;
+    
+    void PrintNum(int num) &#123;
+        Debug.Log(&quot;Print Num: &quot; + num);
+    &#125;
+&#125;</code></pre>
+
+<blockquote>
+<p>internal：在同一个程序集（一个完整的.exe/.dll）的文件，可以跨类。内部类型/成员。</p>
+<p>protected：继承子类可以访问，可以跨程序集。</p>
+</blockquote>
 
             </article>
             <hr>
@@ -311,6 +395,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2022/10/18/Diary-2022-10/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Diary: 2022/10</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
