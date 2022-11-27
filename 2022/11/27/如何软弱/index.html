@@ -17,10 +17,19 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Archives - Hexo</title>
+  <title>如何软弱 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -130,14 +139,56 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/bg/other_pages.png') no-repeat center center;
+         style="background: url('/img/bg/post.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.15)">
           <div class="container text-center white-text fadeInUp">
             <span class="h2" id="subtitle">
               
             </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2022-11-27 13:43">
+      November 27, 2022 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      337 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      3
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
 
             
           </div>
@@ -150,103 +201,112 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">51 posts in total.</p>
-  <hr>
-  
-    
       
-      <p class="h5">2021</p>
-    
-    <a href="/2021/12/13/Diary-2021-12/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/12</span>
-      <span style="float: right;">12-13</span>
-    </a>
-  
-    
-    <a href="/2021/11/23/%E5%90%8D%E5%AD%97/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">名字</span>
-      <span style="float: right;">11-23</span>
-    </a>
-  
-    
-    <a href="/2021/10/25/Diary-2021-10/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary:2021/10</span>
-      <span style="float: right;">10-25</span>
-    </a>
-  
-    
-    <a href="/2021/09/08/Diary-2021-09/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/09</span>
-      <span style="float: right;">09-08</span>
-    </a>
-  
-    
-    <a href="/2021/08/19/%E8%81%8A%E5%A4%A9/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">聊天</span>
-      <span style="float: right;">08-19</span>
-    </a>
-  
-    
-    <a href="/2021/08/19/Diary-2021-08/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/08</span>
-      <span style="float: right;">08-19</span>
-    </a>
-  
-    
-    <a href="/2021/07/20/Diary-2021-07/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/07</span>
-      <span style="float: right;">07-20</span>
-    </a>
-  
-    
-    <a href="/2021/06/03/Diary-2021-06/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/06</span>
-      <span style="float: right;">06-03</span>
-    </a>
-  
-    
-    <a href="/2021/05/14/Diary-2021-05/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Diary: 2021/05</span>
-      <span style="float: right;">05-14</span>
-    </a>
-  
-    
-    <a href="/2021/04/23/%E7%9B%B4%E5%88%B0%E5%AF%B9%E7%A9%BA%E7%99%BD%E5%BF%83%E6%97%A0%E8%8A%A5%E8%92%82/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">直到对空白心无芥蒂 </span>
-      <span style="float: right;">04-23</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2021/page/2/">2</a><a class="extend next" rel="next" href="/archives/2021/page/2/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
-    }
-  </script>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 minutes ago
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p>问：如何软弱</p>
+<p>我爱花、晚霞、正柔和的日光</p>
+<p>我浇水、仰头、于暖阳下行走</p>
+<p>我爱的是伏案写作，涂鸦，拥抱着看电影——一切</p>
+<p>平和与抽象的举动，主题深刻</p>
+<p>情绪存在但克制，鼓励黑色幽默</p>
+<p>但我问：如何软弱</p>
+<p>当生活只剩下十三台</p>
+<p>七乘二十四，两方就三个观点争吵五个小时</p>
+<p>最后六个安保人员收缴八张白纸</p>
+<p>而我从头到尾无知，不知何时何地何目的</p>
+<p>我只好问：如何软弱</p>
+<p>旁观者会被钉上绞刑架吗</p>
+<p>战争中做旗袍的裁缝去了哪</p>
+<p>允不允许起义者饱食和做爱</p>
+<p>云“彼时战争之必然”的学者能否看清此时战争之结局</p>
+<p>还有彩虹吗 还有美吗 还有土豆泥和小蓝花吗</p>
+<p>我必须问：如何软弱</p>
+<p>如果我甚至不愿为自己抗争</p>
+<p>如果我甚至不相信一切有希望</p>
+<p>如果我甚至视一切为性格品质的结果 相信自己是懦夫、怕事者、冷血利己之人</p>
+<p>如果我不懂，所以不听不看，然后不懂，于是不敢听不敢看</p>
+<p>如果我已然知晓自己是面包师而非战士</p>
+<p>那么我该成为面包师还是战士</p>
 
-
-
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Poetry/">Poetry</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Poetry/">Poetry</a>
+                    
+                  </div>
+                
               </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/03/Diary-2022-11/">
+                        <span class="hidden-mobile">Diary: 2022/11</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
             </div>
+
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -487,10 +547,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2021/index.html');
+          var target = decodeURI('/2022/11/27/%E5%A6%82%E4%BD%95%E8%BD%AF%E5%BC%B1/');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -552,6 +612,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -559,7 +644,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "如何软弱&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -574,6 +659,23 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -587,6 +689,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
